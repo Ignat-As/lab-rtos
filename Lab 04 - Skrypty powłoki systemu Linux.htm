@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang=""><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Lab 04 - Skrypty powłoki systemu Linux</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="Lab%2004%20-%20Skrypty%20pow%C5%82oki%20systemu%20Linux_files/github-markdown-light.css">
+  <link rel="stylesheet" href="Lab%2004%20-%20Skrypty%20pow%C5%82oki%20systemu%20Linux_files/custom.css">
+  <link rel="icon" type="image/x-icon" href="https://put-jug.github.io/lab-rtos/_static/favicon.ico">
+  <script>
+  MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+      fontCache: 'global'
+      }
+  };
+  </script>
+  <script src="Lab%2004%20-%20Skrypty%20pow%C5%82oki%20systemu%20Linux_files/polyfill.min.js"></script>
+  <script id="MathJax-script" async="" src="Lab%2004%20-%20Skrypty%20pow%C5%82oki%20systemu%20Linux_files/tex-mml-chtml.js"></script>
+<style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style></head>
+<body>
+<main class="markdown-body">
+<header id="title-block-header">
+<h1 class="title">Lab 04 - Skrypty powłoki systemu Linux</h1>
+</header>
+<h1 id="tworzenie-skryptów-powłoki-systemu-operacyjnego">Tworzenie
+skryptów powłoki systemu operacyjnego</h1>
+<h2 id="interpreter-poleceń-oraz-zmienne-środowiskowe">Interpreter
+poleceń oraz zmienne środowiskowe</h2>
+<p>Powłoka systemowa (ang. <em>shell</em>) to program komputerowy
+pełniący rolę pośrednika pomiędzy systemem operacyjnym lub aplikacjami a
+użytkownikiem, przyjmując jego polecenia i wyświetlając wyniki działania
+programów. W systemach linuksowych (w tym Ubuntu) najpopularniejsza
+obecnie powłoka to <code>bash</code> (ang. <em>Bourne Again Shell</em>)
+- dalsze przykłady będą prezentowane właśnie dla powłoki
+<code>bash</code>.</p>
+<p>Podczas poprzednich zajęć, za każdym razem kiedy otwieraliśmy
+emulator terminala, uruchamiana została nowa instancja powłoki naszego
+użytkownika - program <code>bash</code>. Część poleceń to tzw. polecenia
+wbudowane (bezpośrednio w powłokę) - np. <code>cd</code>,
+<code>pwd</code>, inne to zupełnie oddzielne programy, które
+<code>bash</code> wywoływał - np. <code>ls</code>, <code>chmod</code>
+itd.</p>
+<p><em>Zmienne środowiskowe</em> to bardzo wygodny i uniwersalny sposób
+konfigurowania i parametryzowania powłok systemowych i - za ich pomocą -
+także innych programów. Dostępne zmienne środowiskowe tworzą tzw.
+<em>środowisko wykonania procesu</em> - środowisko to jest kopiowane do
+wszystkich nowych procesów, a więc modyfikacje zmiennych wykonane w
+powłoce są widoczne we wszystkich programach uruchomionych przy użyciu
+tej powłoki. Każdy użytkownik może definiować dowolną ilość własnych
+zmiennych oraz przypisywać im dowolne wartości. Aby zdefiniować zmienną
+środowiskową, należy zastosować operator przypisania (znak “=”) w
+następujący sposób:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">ZMIENNA</span><span class="op">=</span>wartosc</span></code></pre></div>
+<p>W tym wypadku ciąg znaków <code>ZMIENNA</code> to nazwa zmiennej, a
+<code>wartosc</code> to jej wartość - należy zwrócić uwagę, że pomiędzy
+nazwą zmiennej, operatorem przypisania i wartością nie może być spacji.
+Odwołanie się do wartości zmiennej jest możliwe dzięki specjalnemu
+znakowi <code>$</code>; np. wyświetlenie wartości zmiennej na ekranie
+jest możliwe z wykorzystaniem polecenia <code>echo</code>, które
+wyświetla linię tekstu oraz wartości zmiennej pobranej znakiem
+<code>$</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">SYSTEM</span><span class="op">=</span>Unix</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$SYSTEM</span></span></code></pre></div>
+<p>Wyjście:</p>
+<pre><code>Unix</code></pre>
+<p>Polecenie systemowe <code>set</code> pozwala wyświetlić wartości
+wszystkich zmiennych środowiskowych, a polecenie <code>unset</code>
+usuwa zmienną środowiskową, oto przykład:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">unset</span> <span class="va">SYSTEM</span></span></code></pre></div>
+<p>Jak wspomniano środowisko wykonania procesu jest przekazywane do
+procesów potomnych - jednak nie wszystkie zmienne powłoki muszą być
+przekazywane do uruchamianych programów. Zmienne, które są przekazywane
+nazywa się zmiennymi eksportowanymi, a zmienne, które nie są
+przekazywane, nazywa się zmiennymi lokalnymi. Z reguły nowo tworzone
+zmienne są początkowo zmiennymi lokalnymi i niezbędne jest jawne
+wskazanie, że mają być zmiennymi eksportowanymi. Nazywa się to
+eksportowaniem zmiennych i jest realizowane przez poleceniem:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">lista_zmiennych</span></span></code></pre></div>
+<p>Oto przykład tworzenia zmiennej i jej eksportowania:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">SYSTEM</span><span class="op">=</span>Unix</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SYSTEM</span></span></code></pre></div>
+<p>Powyższe polecenia można także zrealizować jednym poleceniem:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">SYSTEM</span><span class="op">=</span>Unix</span></code></pre></div>
+<p>Wyświetlenie eksportowanych zmiennych środowiskowych możliwe jest
+poleceniem <code>env</code>.</p>
+<p>Każdy użytkownik może łatwo (np. poleceniem <code>set</code>)
+zweryfikować, że w systemie domyślnie jest zdefiniowanych wiele
+zmiennych środowiskowych, oto znaczenie podstawowych z nich:</p>
+<ul>
+<li><code>HOME</code> - ścieżka i nazwa katalogu domowego
+użytkownika;</li>
+<li><code>USER</code> - nazwa zalogowanego użytkownika;</li>
+<li><code>PATH</code> - ścieżki poszukiwań programów;</li>
+<li><code>PS1</code> - postać znaku zachęty użytkownika;</li>
+<li><code>SHELL</code> - pełna ścieżka do domyślnego interpretatora
+poleceń użytkownika.</li>
+</ul>
+<p>Zmienne systemowe nie mają typu - wszystkie przechowywane są jako
+napis (ciąg znaków), niezależnie od zawartości.</p>
+<h2 id="zadania-do-samodzielnego-wykonania">Zadania do samodzielnego
+wykonania</h2>
+<ol type="1">
+<li>Zdefiniuj zmienną <code>IMIE</code> i przypisz jej swoje imię.
+Wyświetl zawartość tej zmiennej. Wyeksportuj tą zmienną i sprawdź, czy
+jest dostępna w nowym (potomnym) interpreterze.
+<pre>IMIE=Ignat
+  echo $IMIE
+  export IMIE
+  bash -c 'echo $IMIE'</pre></li>
+<li>Wyświetl listę zmiennych eksportowanych.</li>
+<li>Zmień własny znak zachęty, modyfikując zmienną
+<code>PS1</code>.</li>
+</ol>
+<h2 id="skrypty-i-ich-argumenty">Skrypty i ich argumenty</h2>
+<p>Współczesne powłoki pozwalają także na tworzenie konstrukcji
+programistycznych takich jak instrukcje warunkowe czy pętle. Ponieważ
+kolejne ciągi poleceń możemy umieścić w pliku tekstowym, a następnie
+taki plik uruchomić w powłoce - w połączeniu ze zmiennymi środowiskowymi
+uzyskujemy możliwość pisania programów (skryptów) w języku
+<code>bash</code>.</p>
+<p>Skrypty są bardzo pomocnym rozwiązaniem kiedy istnieje konieczność
+wykonywania złożonych poleceń i poleceń, które są powtarzane
+okresowo.</p>
+<p>Skrypty mogą być parametryzowane argumentami ich wywołania - oznacza
+to, że podczas uruchamiania skryptu można przekazać do niego dane lub
+parametry. Do argumentów wywołania można się odwoływać w skryptach za
+pomocą tzw. zmiennych pozycyjnych, oznaczanych: <em>1</em>, <em>2</em>,
+<em>3</em>, …, <em>9</em>. Każda zmienna pozycyjna przechowuje tekst
+przekazany za pośrednictwem odpowiadającemu jej argumentu wywołania -
+pierwszy argument dostępny jest w zmiennej pozycyjnej <em>1</em> itd.
+Oto przykład pierwszego skryptu, który wyświetla wartości pierwszych
+trzech argumentów jego wywołania:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pierwszy skrypt</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"argument nr 1: </span><span class="va">$1</span><span class="st">"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"argument nr 2: </span><span class="va">$2</span><span class="st">"</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"argument nr 3: </span><span class="va">$3</span><span class="st">"</span></span></code></pre></div>
+<p>Takie polecenia należy zapisać do dowolnego pliku (zaleca się, aby
+pliki skryptów miały rozszerzenie <code>.sh</code>). Pierwsza linia,
+zaczynająca się od ciągu <code>#!</code> pozwala wskazać jaki
+interpreter poleceń ma zostać wykorzystany do jego wykonania - w tym
+przypadku jest to powłoka <code>bash</code>. Druga linia prezentuje
+sposób umieszczania komentarzy: każda linia rozpoczynająca się od znaku
+<code>#</code>, jest traktowana jako komentarz. Kolejne trzy linie
+wyświetlają wartości pierwszych trzech argumentów wywołania skryptu z
+wykorzystaniem polecenia <code>echo</code>. <strong>Aby uruchomić skrypt
+należy dla pliku, w którym jest on zapisany nadać prawo
+wykonywania.</strong> Poniżej przedstawiono przykładowe wywołanie
+przedstawionego powyżej skryptu oraz jego wynik (przyjęto, że plik
+skryptu nazywa się <code>skrypt1.sh</code>):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./skrypt1.sh</span> abc xyz 12345</span></code></pre></div>
+<p>Wyjście:</p>
+<pre><code>argument nr 1: abc
+argument nr 2: xyz
+argument nr 3: 12345</code></pre>
+<h2 id="instrukcja-warunkowa">Instrukcja warunkowa</h2>
+<p>Obecnie powłoki systemowe pozwalają na to, aby skrypty zawierały
+konstrukcje sterujące ich wykonaniem - podstawową instrukcją jest w tym
+przypadku instrukcja warunkowa. Składnia tej instrukcji jest
+następująca:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">warunek</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">instrukcje</span> wykonywane jeśli warunek zostanie spełniony</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">instrukcje</span> wykonywane jeśli warunek nie zostanie spełniony</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Warunek może być dowolnym poleceniem - warunek jest spełniony, jeśli
+program nim będący nie zwrócił błędu (miał kod wyjścia równy 0).
+Przykładowe wykorzystanie programu <code>ping</code> do sprawdzenia
+łączności z serwerem:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="fu">ping</span> <span class="at">-c</span> 1 google.com</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"connected"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"error"</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Najczęściej warunki konstruowane są z wykorzystaniem wbudowanego
+programu <code>test</code> i notacji używającej znaków <code>[</code> i
+<code>]</code> do realizacji testów warunków, co prezentuje kolejny
+przykład:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$1</span> <span class="ot">=</span> xyz <span class="bu">]</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"arg nr 1 = xyz"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"arg nr 1 &lt;&gt; xyz"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Po znaku <code>[</code> i przed znakiem <code>]</code> konieczne jest
+wprowadzenie znaku spacji. Możliwe do sprawdzenia warunki z
+zastosowaniem programu <code>test</code> prezentuje tabela:</p>
+<table>
+<colgroup>
+<col style="width: 75%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Warunek</th>
+<th>Opis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>znaki1 = znaki2</code></td>
+<td>Weryfikacja równości dwóch łańcuchów znaków</td>
+</tr>
+<tr class="even">
+<td><code>znaki1 != znaki2</code></td>
+<td>Weryfikacja nierówności dwóch łańcuchów znaków</td>
+</tr>
+<tr class="odd">
+<td><code>-z znaki</code></td>
+<td>Weryfikacja, czy łańcuch znaków ma zerową długość</td>
+</tr>
+<tr class="even">
+<td><code>-n znaki</code></td>
+<td>Weryfikacja, czy łańcuch znaków ma niezerową długość</td>
+</tr>
+<tr class="odd">
+<td><code>liczba1 -eq liczba2</code></td>
+<td>Weryfikacja równości dwóch liczb</td>
+</tr>
+<tr class="even">
+<td><code>liczba1 -ne liczba2</code></td>
+<td>Weryfikacja nierówności dwóch liczb</td>
+</tr>
+<tr class="odd">
+<td><code>liczba1 -gt liczba2</code></td>
+<td>Weryfikacja, czy <code>liczba1</code> jest większa od
+<code>liczba2</code></td>
+</tr>
+<tr class="even">
+<td><code>liczba1 -lt liczba2</code></td>
+<td>Weryfikacja, czy <code>liczba1</code> jest mniejsza od
+<code>liczba2</code></td>
+</tr>
+<tr class="odd">
+<td><code>-e nazwa</code></td>
+<td>Weryfikacja, czy podany plik istnieje</td>
+</tr>
+<tr class="even">
+<td><code>-f nazwa</code></td>
+<td>Weryfikacja, czy podany plik jest plikiem zwykłym</td>
+</tr>
+<tr class="odd">
+<td><code>-d nazwa</code></td>
+<td>Weryfikacja, czy podany plik jest katalogiem</td>
+</tr>
+<tr class="even">
+<td><code>-r nazwa</code></td>
+<td>Weryfikacja, czy użytkownik ma prawo odczytu dla pliku o podanej
+nazwie</td>
+</tr>
+<tr class="odd">
+<td><code>-w nazwa</code></td>
+<td>Weryfikacja, czy użytkownik ma prawo zapisu dla pliku o podanej
+nazwie</td>
+</tr>
+<tr class="even">
+<td><code>-x nazwa</code></td>
+<td>Weryfikacja, czy użytkownik ma prawo wykonywania dla pliku o podanej
+nazwie</td>
+</tr>
+<tr class="odd">
+<td><code>warunek1 -a warunek2</code></td>
+<td>Iloczyn logiczny warunków</td>
+</tr>
+<tr class="even">
+<td><code>warunek1 &amp;&amp; warunek2</code></td>
+<td>Iloczyn logiczny warunków</td>
+</tr>
+<tr class="odd">
+<td><code>warunek1 -o warunek2</code></td>
+<td>Suma logiczna warunków</td>
+</tr>
+<tr class="even">
+<td><code>warunek1 \|\| warunek2</code></td>
+<td>Suma logiczna warunków</td>
+</tr>
+<tr class="odd">
+<td><code>! warunek1</code></td>
+<td>Negacja warunku</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pętle">Pętle</h2>
+<p>Skrypty powłoki mogą także zawierać pętle - podstawowe dwie z nich to
+pętla <code>for</code> oraz <code>while</code>. Pętla <code>for</code>
+wykonywana jest z góry określoną ilość razy, a jej ogólna składnia jest
+następująca:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> zmienna <span class="kw">in</span> lista</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">instrukcje_do_wykonania</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Wykonanie pętli powoduje przypisywanie zmiennej zmienna kolejnych
+wartości wymienionych na liście lista; ilość iteracji, jest zatem
+zależna od długości podanej listy. Jako listę można w pętli for można
+podawać wzorce uogólniające powłoki. Poniższy przykład skryptu
+prezentuje zastosowanie pętli for do usunięcia wszystkich plików z
+rozszerzeniem <code>.tmp</code> z katalogu bieżącego:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> <span class="pp">*</span>.tmp</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rm</span> <span class="at">-v</span> <span class="va">$FILE</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Ilość iteracji powyższej pętli bezie zatem determinowana ilością
+plików z rozszerzeniem <code>*.tmp</code>, które utworzą listę wartości
+dla zmiennej <code>FILE</code>.</p>
+<p>Realizacja pętli numerycznej z zastosowaniem pętli <code>for</code>
+jest możliwa z użyciem programu zakresów definiowanych operatorem
+nawiasów klamrowych <code>{start..stop}</code>, np.:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> N <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">10</span><span class="dt">}</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$N</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>spowoduje dziesięciokrotne wykonanie pętli.</p>
+<p>Pętla <code>while</code> pozwala na realizację pętli, dla których
+ilość iteracji nie jest znana z góry, jej składnia dla skryptów powłoki
+jest następująca:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="ex">warunek</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">instrukcje_do_wykonania</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Warunek może być dowolnym poleceniem i najczęściej jest konstruowany
+- tak jak w przypadku instrukcji warunkowej - z zastosowaniem programu
+<code>test</code>.</p>
+<p>Przykładem zastosowania pętli <code>while</code> może być skrypt
+wypisujący na ekranie wartości wszystkich argumentów wywołania skryptu
+(niezależnie od ich liczby). Pętla taka będzie wykorzystywała polecenie
+<code>shift</code>, które powoduje przesunięcie argumentów - oto
+skrypt:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">[</span> <span class="ot">-n</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span> <span class="bu">]</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>   <span class="bu">echo</span> <span class="va">$1</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>   <span class="bu">shift</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Warunkiem wykonania pętli jest sprawdzenie, czy pierwszy argument
+wywołania skryptu ma niezerową długość - jeśli skrypt został uruchomiony
+bez żadnych argumentów, to pętla nie zostanie wykonana. Jeśli natomiast
+skrypt został wykonany z argumentami, to w pierwszym wykonaniu pętli
+zostanie wyświetlona wartość pierwszego argumentu, a następnie nastąpi
+przesunięcie argumentów w lewo poleceniem <code>shift</code> (drugi
+argument stanie się pierwszym, trzeci drugim itd.). Pętla zakończy się
+jeśli zostaną wyświetlone i przesunięte wszystkie argumenty (zmienna
+pozycyjna <code>$1</code> będzie miała wówczas zerową długość).</p>
+<p>Aby wyświetlić wszystkie argumenty skryptu bez korzystania z pętli
+wystarczy wykorzystać zmienną <code>$*</code>, natomiast ich liczbę -
+<code>$#</code></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Liczba argumentow: </span><span class="va">$#</span><span class="st">"</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Wszystkie argumenty: </span><span class="va">$*</span><span class="st">"</span></span></code></pre></div>
+<p>W ten sposób można również iterować po argumentach:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> arg <span class="kw">in</span> <span class="va">$*</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Argument: </span><span class="va">$arg</span><span class="st">"</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Obie zaprezentowane pętle mogą zostać przerwane poleceniem
+<code>break</code> - oto przykład zastosowania przerywania pętli:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bashzad6.sh</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> FILE <span class="kw">in</span> <span class="pp">*</span>.tmp</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="va">$FILE</span> <span class="bu">]</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>   <span class="cf">then</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      <span class="bu">echo</span> <span class="st">"</span><span class="va">$FILE</span><span class="st"> nie jest plikiem!"</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>   <span class="cf">fi</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">rm</span> <span class="at">-v</span> <span class="va">$FILE</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Jak widać pętla zostanie przerwana, jeśli pobrana nazwa z
+rozszerzeniem <code>*.tmp</code> nie będzie wskazywała na plik
+zwykły.</p>
+<p>Wykonywanie całego skryptu można przerwać poleceniem
+<code>exit</code>.</p>
+<h2 id="pobieranie-wartości-do-skryptów">Pobieranie wartości do
+skryptów</h2>
+<p>Jeśli skrypt wymaga interakcji z użytkownikiem, to niezbędne staje
+się pobieranie wartości przekazywanych przez użytkownika. Służy do tego
+polecenie:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">[</span>argumenty<span class="op">]</span></span></code></pre></div>
+<p>Argumentami są nazwy zmiennych środowiskowych, które przyjmą wartość
+odczytana ze standardowego wejścia (do napotkania znaku nowej linii).
+Jeśli jako argumenty podano kilka zmiennych, to są one inicjowane w ten
+sposób, że pierwsze słowo trafia do pierwszej zmiennej, drugie do
+drugiej itd. Polecenie to można przetestować wykonując następujące
+polecenia:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">X</span> <span class="va">Y</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$X</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$Y</span></span></code></pre></div>
+<p>Wejście:</p>
+<pre><code>uzytkownik adam</code></pre>
+<p>Wyjście:</p>
+<pre><code>uzytkownik
+adam</code></pre>
+<p>Polecenie <code>read</code> może również współpracować z pętlą
+<code>while</code> i potokiem, co pozwala na przetwarzanie wejściowego
+strumienia tekstu linia po linii:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> file.txt <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="va">line</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> Linia tekstu: <span class="va">$line</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Ponieważ znak spacji jest w powłoce separatorem argumentów,
+problematyczne mogą stać się zawartości zmiennych bądź nazwy plików
+zawierające spacje. Umieszczenie tekstu w podwójnym cudzysłowie
+(<code>"</code>) spowoduje, że cała jego zawartość, wraz ze spacjami
+zostanie potraktowana jako jeden argument.</p>
+<p>Przykładowo, przypisanie do zmiennej napisu zawierającego spacje:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="va">LISTA</span><span class="op">=</span><span class="st">"abc 123 456"</span></span></code></pre></div>
+<p>Umieszczenie napisu w pojedynczym cudzysłowie (<code>'</code>)
+spowoduje, że jego zawartość nie będzie interpretowana w żaden sposób
+(np. znaki <code>$</code> nie będą oznaczały odwołań do zmiennych).</p>
+<p>Poniższe trzy pętle generują zatem różne rezultaty:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ZMIENNA <span class="kw">in</span> <span class="va">$LISTA</span> <span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$ZMIENNA</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ZMIENNA <span class="kw">in</span> <span class="st">"</span><span class="va">$LISTA</span><span class="st">"</span> <span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$ZMIENNA</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ZMIENNA <span class="kw">in</span> <span class="st">'$LISTA'</span> <span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$ZMIENNA</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>Jeśli chcemy natychmiast po zawartości zmiennej dokleić dodatkowy
+tekst, można ująć nazwę zmiennej w klamry, np:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">${A}</span>hello</span></code></pre></div>
+<p>Umieszczenie tekstu w <em>grawisie</em> (<code>`</code>) powoduje
+<strong>uruchomienie</strong> zawartego w nim tekstu, a następnie
+podstawienie w dane miejsce wyjścia uruchomionego programu. Przykładowo,
+zapisanie bieżącego katalogu roboczego do zmiennej:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="va">CURRENT_DIR</span><span class="op">=</span><span class="kw">`</span><span class="bu">pwd</span><span class="kw">`</span></span></code></pre></div>
+<h2 id="parsowanie-linii-tekstu">Parsowanie linii tekstu</h2>
+<p>Często istniej konieczność przetworzenia zawartości pojedynczej linii
+tekstu (np. parsowanie plików, wartości które zostały wygenerowane przez
+pipe filtrów). Rozdzielone wartości przypisywane są do odrębnych
+zmiennych, które następnie skrypt przetwarza. Przykład przedstawia
+sposób wczytania pliku csv (gdzie elementy oddzielone są przecinkami
+złożonego z 3 kolumn). Ponieważ w pliku znajduje się nagłówek jest on
+pominięty (komenda <code>tail</code>):</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">#! /bin/bash</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span><span class="st">","</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">rec_column1</span> <span class="va">rec_column2</span> <span class="va">rec_column3</span> <span class="va">rec_column4</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Displaying Record-</span><span class="va">$rec_column1</span><span class="st">"</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Quantity: </span><span class="va">$rec_column2</span><span class="st">"</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Price: </span><span class="va">$rec_column3</span><span class="st">"</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Value: </span><span class="va">$rec_column4</span><span class="st">"</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">""</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="fu">tail</span> <span class="at">-n</span> +2 input.csv<span class="op">)</span></span></code></pre></div>
+<p>Atrybut <code>IFS</code> (input field separator) modyfikuje działanie
+read (domyślnie wczytywana jest pojedynczy wyraz oddzielony spacją lub
+znakiem nowej linii) Do wstępnego przetworzenia danych wejściowych
+wykorzystano komendę <code>tail</code>, i przekazano go jako wejście
+pętli za pomocą <a href="https://www.gnu.org/software/bash/manual/html_node/Process-Substitution.html">process
+substitution</a>. Analogicznie można przekierować wyjście (np. wynik
+działania pętli przekierować do strumienia) np.
+<code>... done &lt; &lt;(tail -n +2 input.csv)  &gt; &gt;(sort | tail -n 10 &gt; output.txt)</code>
+posortuje wynik działania pętli i zapisze do pliku 10 ostatnich
+wierszy.</p>
+<p>W cześci starszych interpreterów process substitution może nie być
+dostępne, wtedy można zastosować pipe:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 input.csv <span class="kw">|</span> <span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span><span class="st">","</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">rec_column1</span> <span class="va">rec_column2</span> <span class="va">rec_column3</span> <span class="va">rec_column4</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Displaying Record-</span><span class="va">$rec_column1</span><span class="st">"</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Quantity: </span><span class="va">$rec_column2</span><span class="st">"</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Price: </span><span class="va">$rec_column3</span><span class="st">"</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"Value: </span><span class="va">$rec_column4</span><span class="st">"</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">""</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h2 id="funkcje">Funkcje</h2>
+<p>W skryptach bash możemy również definiować funkcje, które pozwalają
+na uproszczenie kodu. Przykład prostej funkcji oraz jej wywołania
+pokazano poniżej:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> total_files</span> <span class="kw">{</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">find</span> <span class="va">$1</span> <span class="at">-type</span> f <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="va">katalog</span><span class="op">=</span><span class="kw">`</span><span class="bu">pwd</span><span class="kw">`</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">"Liczba plikow w katalogu </span><span class="va">$katalog</span><span class="st"> = "</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="ex">total_files</span> <span class="va">$katalog</span></span></code></pre></div>
+<p>Wewnątrz definicji funkcji, którą podajemy w nawiasach klamrowych po
+nazwie funkcji, można wykorzystać argumenty przekazywane do funkcji
+analogicznie jak argumenty przekazywane do skryptu, tzn. za pomocą
+<code>$1</code>, <code>$2</code>, <code>$3</code> itd. Funkcja
+total_files sprawdza liczbę plików w podanym katalogu. Aby użyć
+zdefiniowanej funkcji w dalszej części skryptu, wystarczy podać jej
+nazwę oraz po kolei argumenty przekazywane do funkcji. Jeśli chcemy
+przypisać wynik funkcji do zmiennej należy wykorzystać operator $:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="va">files</span><span class="op">=</span><span class="va">$(</span><span class="ex">total_files</span> <span class="va">$katalog)</span></span></code></pre></div>
+<h2 id="operacje-matematyczne">Operacje matematyczne</h2>
+<p>W skryptach bash można wykonywać operacje matematyczne na zmiennych
+całkowitoliczbowych. Jest na to kilka sposobów. Pierwszy to
+wykorzystanie podwójnych nawiasów:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="va">wynik</span><span class="op">=</span><span class="va">$((</span><span class="dv">5</span><span class="op">+</span><span class="dv">8</span><span class="va">))</span></span></code></pre></div>
+<p>Drugim sposobem jest wykorzystanie polecenia <code>expr</code>:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="va">wynik</span><span class="op">=</span><span class="va">$(</span><span class="fu">expr</span> 5 + 8<span class="va">)</span></span></code></pre></div>
+<p>Inny sposób polega na użyciu polecenia <code>let</code>:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">let</span> <span class="va">wynik</span><span class="op">=</span><span class="dv">5</span><span class="op">+</span><span class="dv">8</span></span></code></pre></div>
+<p>Podstawowe operatory matematyczne w skryptach bash:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Operator</th>
+<th style="text-align: center;">Opis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">+, -, *, /</td>
+<td style="text-align: center;">suma, różnica, mnożenie, dzielenie</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">**</td>
+<td style="text-align: center;">potęgowanie</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">var++</td>
+<td style="text-align: center;">inkrementacja</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">var--</td>
+<td style="text-align: center;">dekrementacja</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">%</td>
+<td style="text-align: center;">modulo</td>
+</tr>
+</tbody>
+</table>
+<h2 id="debugowanie-skryptów">Debugowanie skryptów</h2>
+<p>Skrypty mogą być także wykonywane w trybie debugowania, np. w celu
+testowania poprawności działania, warunków, pętli itp. Aby zrealizować
+wykonanie skryptu z wyświetlaniem informacji kontrolnych należy
+zastosować przełącznik <code>-x</code> wywołania interpretatora poleceń.
+Można to zrealizować na trzy sposoby:</p>
+<ul>
+<li>dopisać przełącznik w pierwszej linii skryptu:
+<code>#!/bin/bash -x</code></li>
+<li>uruchomić skrypt wywołując jawnie interpreter z parametrem
+<code>-x</code> oraz argumentem z nazwą skryptu, np .</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> <span class="at">-x</span> nazwa_skryptu.sh</span></code></pre></div>
+<ul>
+<li>wywołując wewnątrz skryptu polecenie <code>set -x</code></li>
+</ul>
+<p>Często ma miejsce sytuacja, kiedy niepowodzenie jakiegokolwiek z
+poleceń (np. utworzenie katalogu roboczego) powoduje, że dalsze operacje
+nie mają sensu. Przydatną opcją powłoki jest wtedy przełącznik
+<code>-e</code>, który powoduje, że powłoka (np. wykonująca skrypt)
+zostanie przerwana, w momencie kiedy którykolwiek z użytych w niej
+programów (poza warunkami w instrukcjach warunkowych/pętlach) zwróci
+błąd. Ustawienie przełącznika <code>-e</code> może odbyć się na sposoby
+analogiczne do opisanych powyżej.</p>
+<h2 id="zadania-do-samodzielnego-wykonania-1">Zadania do samodzielnego
+wykonania</h2>
+<ol start="4" type="1">
+<li>Napisz skrypt, który dla każdego elementu (pliku, folderu) w
+bieżącym katalogu wyświetli jego nazwę&nbsp;wraz z informacją czy jest to
+plik czy katalog.
+<pre>nano zad4.sh
+
+
+#!/bin/bash
+
+for element in *; do
+
+  [ -e "$element" ] || continue 
+
+  if [ -d "$element" ]; then
+    echo "$element - katalog"
+  elif [ -f "$element" ]; then
+    echo "$element - plik"
+  else
+    echo "$element - inny typ (np. dowiązanie, potok)"
+  fi
+done
+
+  
+chmod +x zad4.sh
+./zad4.sh
+</pre></li>
+<li>Napisz skrypt, który dla każdego z plików podanych jako argumenty
+wywołania wyświetli nazwę pliku, a następnie jego zawartość posortowaną
+alfabetycznie. 
+<pre><font color="#2AA1B3">#!/bin/bash</font>
+
+<font color="#26A269">for</font> plik <font color="#26A269">in</font> <font color="#A2734C"><b>"$*"</b></font><font color="#26A269">;</font> <font color="#26A269">do</font>
+  <font color="#26A269">if</font> <font color="#26A269">[</font><font color="#A347BA"><b> -f</b></font> <font color="#A2734C"><b>"$plik"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+   <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"$plik"</b></font>
+   <font color="#12488B"><b>sort</b></font> <font color="#A2734C"><b>"$plik"</b></font>
+   <font color="#26A269">else</font>
+     <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"error"</b></font>
+  <font color="#26A269">fi</font>
+<font color="#26A269">done</font>
+</pre></li>
+<li>Napisz skrypt, który będzie kopiował plik podany jako pierwszy
+argument do wszystkich katalogów podanych jako kolejne argumenty
+wywołania. Zweryfikuj co stanie się gdy w nazwie pliku będzie spacja.
+Spróbuj rozwiązać ew. problem.
+<pre><font color="#2AA1B3">#!/bin/bash</font>
+
+plik<font color="#26A269">=</font><font color="#A2734C"><b>"$1"</b></font>
+
+<font color="#26A269">if</font> <font color="#26A269">[</font> <font color="#26A269">!</font><font color="#A347BA"><b> -f</b></font> <font color="#A2734C"><b>"$plik"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+  <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Błąd: Plik '$plik' nie istnieje."</b></font>
+  <font color="#26A269">exit</font> 1
+<font color="#26A269">fi</font>
+
+<font color="#26A269">for</font> katalog <font color="#26A269">in</font> <font color="#A2734C"><b>"${*:2}"</b></font><font color="#26A269">;</font> <font color="#26A269">do</font>
+  <font color="#26A269">if</font> <font color="#26A269">[</font><font color="#A347BA"><b> -d</b></font> <font color="#A2734C"><b>"$katalog"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+    <font color="#12488B"><b>cp</b></font> <font color="#A2734C"><b>"$plik"</b></font> <font color="#A2734C"><b>"$katalog/"</b></font>
+    <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Skopiowano '$plik' do '$katalog/'"</b></font>
+  <font color="#26A269">else</font>
+    <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Błąd: '$katalog' nie jest prawidłowym katalogiem."</b></font>
+  <font color="#26A269">fi</font>
+<font color="#26A269">done</font>
+</pre></li>
+<li>Napisz skrypt, który wykona kopię zapasową plików podanych jako
+argumenty, do katalogu <code>backup</code> i dopisze do ich nazwy
+bieżącą datę:</li>
+</ol>
+<p>Przykładowo:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./super_backup.sh</span> notatki.txt zdjecia.tar.gz </span></code></pre></div>
+<p>Skopiuje:</p>
+<p><code>notatki.txt</code> do
+<code>backup/notatki.txt_2021-10-29</code></p>
+<p><code>zdjecia.tar.gz</code> do
+<code>backup/zdjecia.tar.gz_2021-10-29</code></p>
+<p>Jeśli folder <code>backup</code> nie istnieje, program powinien go
+utworzyć. Jeśli plik docelowy już istnieje, program powinien wyświetlić
+stosowny komunikat i przerwać pracę.</p>
+<p>Podpowiedź: bieżącą datę możesz uzyskać poleceniem
+<code>date '+%Y-%m-%d'</code><pre><font color="#2AA1B3">#!/bin/bash</font>
+
+<font color="#12488B"><b>mkdir</b></font><font color="#A347BA"><b> -p</b></font> backup
+DATA<font color="#26A269">=$(</font>date <font color="#A2734C"><b>'+%Y-%m-%d'</b></font><font color="#26A269">)</font>
+
+<font color="#26A269">for</font> plik <font color="#26A269">in</font> <font color="#A2734C"><b>"$*"</b></font><font color="#26A269">;</font> <font color="#26A269">do</font>
+  <font color="#26A269">if</font> <font color="#26A269">[</font><font color="#A347BA"><b> -f</b></font> <font color="#A2734C"><b>"$plik"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+    nazwa<font color="#26A269">=$(</font>basename <font color="#A2734C"><b>"$plik"</b></font><font color="#26A269">)</font>
+    docelowy<font color="#26A269">=</font><font color="#A2734C"><b>"backup/${nazwa}_${DATA}"</b></font>
+<span style="background-color:#26A269">    </span>
+    <font color="#26A269">if</font> <font color="#26A269">[</font><font color="#A347BA"><b> -e</b></font> <font color="#A2734C"><b>"$docelowy"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+      <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Błąd: Plik $docelowy już istnieje! Przerwano działanie."</b></font>
+      <font color="#26A269">exit</font> 1
+    <font color="#26A269">fi</font>
+<span style="background-color:#26A269">    </span>
+    <font color="#12488B"><b>cp</b></font> <font color="#A2734C"><b>"$plik"</b></font> <font color="#A2734C"><b>"$docelowy"</b></font>
+    <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Skopiowano $plik do $docelowy"</b></font>
+  <font color="#26A269">else</font>
+    <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Pominięto: $plik (nie jest to zwykły plik lub nie istnieje)"</b></font>
+  <font color="#26A269">fi</font>
+<font color="#26A269">done</font>
+</pre></p>
+
+<ol start="8" type="1">
+<li><p>Napisz skrypt, który będzie oczekiwał na pojawienie się pliku o
+nazwie wskazanej w argumencie. Skrypt powinien cyklicznie (co 5 sekund)
+sprawdzać istnienie pliku. Jeśli plik istnieje, skrypt powinien
+wyświetlić jego zawartość i zakończyć się. Uruchom skrypt, a z poziomu
+drugiego terminala utwórz monitorowany plik.</p>
+<pre><font color="#2AA1B3">#!/bin/bash</font>
+
+PLIK<font color="#26A269">=</font><font color="#A2734C"><b>"$1"</b></font>
+<font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Oczekiwanie na plik: $PLIK..."</b></font>
+
+<font color="#26A269">while</font> true<font color="#26A269">;</font> <font color="#26A269">do</font>
+  <font color="#26A269">if</font> <font color="#26A269">[</font><font color="#A347BA"><b> -f</b></font> <font color="#A2734C"><b>"$PLIK"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+    <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"--- Plik utworzony. Zawartość: ---"</b></font>
+    <font color="#12488B"><b>cat</b></font> <font color="#A2734C"><b>"$PLIK"</b></font>
+    <font color="#26A269">exit</font> 0<font color="#2AA1B3"> # Zakończenie pracy skryptu</font>
+  <font color="#26A269">fi</font>
+  sleep 5
+<font color="#26A269">done</font>
+</pre></li>
+<li><p>Utwórz skrypt i umieść w nim funkcję realizującą sumę dwóch
+argumentów (liczb) podawanych do skryptu.</p><pre><font color="#2AA1B3">#!/bin/bash</font>
+
+<font color="#26A269"><b>suma</b></font><font color="#26A269">()</font> <font color="#26A269">{</font>
+  wynik<font color="#26A269">=$((</font><font color="#C01C28"><b>$1</b></font> + <font color="#C01C28"><b>$2</b></font><font color="#26A269">))</font>
+  <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"Suma: $wynik"</b></font>
+<font color="#26A269">}</font>
+
+suma <font color="#A2734C"><b>"$1"</b></font> <font color="#A2734C"><b>"$2"</b></font></pre>
+</li>
+<li><p>W pliku <a href="https://put-jug.github.io/lab-rtos/_resources/trees.txt">trees.txt</a> zapisane są
+w formacie csv informacje o kilku drzewach rosnących w ogrodzie (wraz z
+nagłówkiem w pierwszej linii, informującym o zawartości kolumn pliku).
+Napisz skrypt, który zapisze do pliku output.txt wysokości dwóch
+najwyższych brzóz o statusie “chronione”. Weryfikacja:<br>
+<code>./skrypt.sh trees.txt</code><br>
+Oczekiwana zawartość pliku output.txt po uruchomieniu skryptu:<br>
+11.0<br>
+10.8</p>
+  <pre><font color="#2AA1B3">#!/bin/bash</font>
+
+PLIK_WEJSCIOWY<font color="#26A269">=</font><font color="#A2734C"><b>"$1"</b></font>
+
+<font color="#12488B"><b>grep</b></font> <font color="#A2734C"><b>"chronione.*brzoza"</b></font> <font color="#A2734C"><b>"$PLIK_WEJSCIOWY"</b></font> <font color="#26A269">|</font> <font color="#12488B"><b>cut</b></font><font color="#A347BA"><b> -d</b></font><font color="#A2734C"><b>','</b></font> -f3 <font color="#26A269">|</font> <font color="#12488B"><b>sort</b></font> -nr <font color="#26A269">|</font> <font color="#12488B"><b>head</b></font><font color="#A347BA"><b> -n</b></font> 2 <font color="#26A269">&gt;</font> output.txt
+</pre>
+</li>
+</ol>
+<hr>
+<p>Autorzy:<br>
+<em>Adam Bondyra</em>, <em>Jakub Tomczyński</em>, <em>Bartłomiej
+Kulecki</em>, <em>Piotr Kaczmarek</em></p>
+<p>Opracowano na podstawie materiałów projektu <em>Otwartych Studiów
+Informatycznych (http://wazniak.mimuw.edu.pl/)</em>.</p>
+</main>
+
+
+</body></html>

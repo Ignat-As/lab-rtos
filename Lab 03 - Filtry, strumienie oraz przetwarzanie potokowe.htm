@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang=""><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Lab 03 - Filtry, strumienie oraz przetwarzanie potokowe</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="Lab%2003%20-%20Filtry,%20strumienie%20oraz%20przetwarzanie%20potokowe_files/github-markdown-light.css">
+  <link rel="stylesheet" href="Lab%2003%20-%20Filtry,%20strumienie%20oraz%20przetwarzanie%20potokowe_files/custom.css">
+  <link rel="icon" type="image/x-icon" href="https://put-jug.github.io/lab-rtos/_static/favicon.ico">
+  <script>
+  MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+      fontCache: 'global'
+      }
+  };
+  </script>
+  <script src="Lab%2003%20-%20Filtry,%20strumienie%20oraz%20przetwarzanie%20potokowe_files/polyfill.min.js"></script>
+  <script id="MathJax-script" async="" src="Lab%2003%20-%20Filtry,%20strumienie%20oraz%20przetwarzanie%20potokowe_files/tex-mml-chtml.js"></script>
+<style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style></head>
+<body>
+<main class="markdown-body">
+<header id="title-block-header">
+<h1 class="title">Lab 03 - Filtry, strumienie oraz przetwarzanie
+potokowe</h1>
+</header>
+<h1 id="filtry-strumienie-oraz-przetwarzanie-potokowe">Filtry,
+strumienie oraz przetwarzanie potokowe</h1>
+<h2 id="standardowe-wejściewyjście">Standardowe wejście/wyjście</h2>
+<p>Każdy proces domyślnie korzysta ze standardowych strumieni danych,
+będących abstrakcją źródła lub ujścia danych. Dla każdego procesu system
+tworzy standardowy strumień wejściowy (ang. <em>standard input</em>),
+reprezentujący urządzenia wejściowe, np. klawiaturę i dysk, standardowy
+strumień wyjściowy (ang. <em>standard output</em>), którym może być
+terminal (monitor komputera) lub plik oraz standardowy strumień
+diagnostyczny (ang. <em>standard error</em>). Strumienie wejściowy,
+wyjściowy i diagnostyczny oznaczane są odpowiednio: <code>stdin</code>,
+<code>stdout</code>, <code>stderr</code>. Każdy strumień ma
+odpowiadające mu wartości: <code>stdin</code> - 0, <code>stdout</code> -
+1 i <code>stderr</code> - 2.</p>
+<figure>
+<img src="Lab%2003%20-%20Filtry,%20strumienie%20oraz%20przetwarzanie%20potokowe_files/lab_04_proc_std.png" alt="Standardowe wejscie-wyjscie procesu">
+<figcaption aria-hidden="true">Standardowe wejscie-wyjscie
+procesu</figcaption>
+</figure>
+<p>Standardowe strumienie procesów charakteryzują się następującymi
+cechami:</p>
+<ul>
+<li>Dane odczytywane są poprzez standardowe wejście.</li>
+<li>Dane wypisywane są na standardowym wyjściu lub standardowym wyjściu
+diagnostycznym.</li>
+<li>Raz przeczytanych danych nie można ponownie przeczytać.</li>
+</ul>
+<p>Działanie standardowych strumieni ilustruje program <code>cat</code>.
+Uruchomienie tego programu bez argumentów powoduje przepisanie tego, co
+zostanie wpisane z wejścia standardowego (klawiatury) na wyjście
+standardowe (okno terminala). Wpisywanie danych z klawiatury można
+zakończyć za pomocą kombinacji <em>Ctrl-D</em> (reprezentowane w
+listingach jako <code>^D</code>).</p>
+<h2 id="przekierowanie-wejściawyjścia-procesów">Przekierowanie
+wejścia/wyjścia procesów</h2>
+<p>Istnieje możliwość przeadresowania strumieni wyjściowych i
+wejściowych. Zmianę standardowego wejścia, wyjścia i wyjścia
+diagnostycznego można dokonać za pomocą operatorów: <code>&gt;</code>,
+<code>&lt;</code>, <code>&gt;&gt;</code>, <code>&lt;&lt;</code>.</p>
+<p>Operator <code>&gt;</code> powoduje przeadresowanie standardowego
+wyjścia, czyli utworzenie pliku i zapisanie w nim tego, co proces
+wypisałby na standardowym wyjściu. Jeśli wskazany plik już istnieje,
+zostanie on usunięty i utworzony na nowo.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> plik.txt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> jest plik.</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Ala</span> ma kota.</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">^D</span></span></code></pre></div>
+<p>Operator <code>&lt;</code> powoduje przeadresowanie standardowego
+wejścia procesu, czyli pobranie danych wejściowych ze wskazanego
+pliku:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;</span> plik.txt</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> jest plik.</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Ala</span> ma kota.</span></code></pre></div>
+<p>Operatory <code>&gt;</code> i <code>&lt;</code> można używać
+jednocześnie, przeadresowując zarówno wyjście jak i wejście, co
+spowoduje, że zawartość pliku <code>plik.txt</code> zostaje skopiowana
+do pliku <code>plik_nowy.txt</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;</span> plik.txt <span class="op">&gt;</span> plik_nowy.txt</span></code></pre></div>
+<p>Operator <code>&gt;&gt;</code> przeadresowuje standardowe wyjście,
+dopisując wyniki działania programu na końcu istniejącego pliku:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;&gt;</span> plik.txt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Kot</span> ma Ale.</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">^D</span></span></code></pre></div>
+<p>Operator <code>&lt;&lt;</code> powoduje, że do procesu zostaną
+przekazane dane ze standardowego wejścia aż do napotkania wskazanego
+napisu:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&lt;&lt; przerwa</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; Ala ma kota</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; Kot ma Ale</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; przerwa</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">Ala ma kota</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">Kot ma Ale.</span></span></code></pre></div>
+<p>Niektóre polecenia równolegle z wyświetlanymi na standardowym wyjściu
+informacjami wysyłają dodatkowe informacje informujące o błędach
+przetwarzania na standardowe wyjście diagnostyczne. Istnieje możliwość
+niezależnego przekierowania strumienia diagnostycznego, poprzez operator
+<code>&gt;</code> poprzedzony numerem wyjścia diagnostycznego, czyli
+<code>2</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> plik1.txt plik2.txt <span class="dv">2</span><span class="op">&gt;</span> plik3.err</span></code></pre></div>
+<p>Polecenie to spowoduje wyświetlenie zawartości plików
+<code>plik1.txt</code> i <code>plik2.txt</code> oraz zapisanie
+informacji o błędach do pliku <code>plik3.err</code>.</p>
+<p>W celu pominięcia komunikatów o błędach, wyjście diagnostyczne można
+przeadresować do pliku <code>/dev/null</code>. Wszystko co zostaje
+wysłane do pliku <code>null</code>, znajdującego się w katalogu
+<code>/dev</code> zostanie utracone:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> plik1.txt plik2.txt<span class="op">&gt;</span> plik3.txt <span class="dv">2</span><span class="op">&gt;</span> /dev/null</span></code></pre></div>
+<p>Polecenie to spowoduje zapisanie kolejno zawartości plików
+<code>plik1.txt</code> i <code>plik2.txt</code> do pliku
+<code>plik3.txt</code> oraz jednocześnie zignoruje komunikaty o
+błędach.</p>
+<p>W przypadku gdy strumień diagnostyczny ma trafiać tam, gdzie strumień
+wyjściowy, należy użyć zapisu <code>2&gt;&amp;1</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> plik1.txt plik2.txt<span class="op">&gt;</span> plik3.txt <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span></span></code></pre></div>
+<p>Wiele programów konsolowych działających na strumieniach może przyjąć
+również nazwę pliku jako wejście: polecenie
+<code>cat &lt; plik.txt</code> wygeneruje taki sam efekt jak
+<code>cat plik.txt</code>, a w przypadku skomplikowanego potoku wersja
+druga może okazać się znacząco czytelniejsza. Dodatkowo, wiele programów
+akceptuje przekazanie <code>-</code> jako nazwy pliku, co w zależności
+od kontekstu oznacza wejście lub wyjście standardowe.</p>
+<h2 id="przetwarzanie-potokowe">Przetwarzanie potokowe</h2>
+<p>Standardowe wyjście jednego procesu może być połączone ze
+standardowym wejściem innego procesu, tworząc tzw. potok pomiędzy tymi
+procesami.</p>
+<figure>
+<img src="Lab%2003%20-%20Filtry,%20strumienie%20oraz%20przetwarzanie%20potokowe_files/lab_04_stream.png" alt="Standardowe wejscie-wyjście procesu">
+<figcaption aria-hidden="true">Standardowe wejscie-wyjście
+procesu</figcaption>
+</figure>
+<p>Przetwarzanie potokowe polega na buforowaniu przez system danych
+produkowanych przez pierwszy proces i następnie odczytywaniu tych danych
+przez drugi proces. Innymi słowy proces w potoku czyta dane z wejścia,
+które zostało przeadresowane na wyjście procesu poprzedniego. W potoku
+może brać udział jednocześnie kilka procesów. Do przekierowania danych
+do kolejnego procesu używany jest znak <code>|</code>. Poniżej podano
+przykłady potoków:</p>
+<p>Proces <code>ls</code> podaje wynik procesowi <code>more</code>,
+który w efekcie wyświetla listing strona po stronie:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-al</span> <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
+<p>Proces <code>who</code> podaje wynik procesowi <code>sort</code>,
+podając posortowaną listę pracowników pracujących w systemie:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">who</span> <span class="kw">|</span> <span class="fu">sort</span></span></code></pre></div>
+<p>Proces <code>ps</code> podaje wynik procesowi <code>grep</code>,
+wyszukując na liście procesów linii zawierających słowo
+<code>csh</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> <span class="at">-ef</span> <span class="kw">|</span> <span class="fu">grep</span> csh</span></code></pre></div>
+<p>Proces <code>ls</code> podaje wynik procesowi <code>sort</code>,
+który następnie podaje wynik procesowi <code>head</code>, wyświetlając
+pierwszych 10 największych plików:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> /usr/bin <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-bnr</span> +4 <span class="at">-5</span> <span class="kw">|</span> <span class="fu">head</span></span></code></pre></div>
+<h2 id="filtry">Filtry</h2>
+<p>Istnieją programy, których zadaniem jest odczyt danych ze
+standardowego wejścia, przetworzenie tych danych i ich zapis na
+standardowe wyjście. Programy takie nazywane są filtrami i są szeroko
+wykorzystywane w przetwarzaniu potokowym. Poniżej przedstawiono
+najczęściej wykorzystywane filtry:</p>
+<ul>
+<li><code>cat</code> - najprostszy filtr, nie wprowadzający zmian do
+przetwarzanych danych. Użyteczne przełączniki:
+<ul>
+<li><code>-s</code> z paru pustych linii robi jedną</li>
+<li><code>-n</code> numeruje wszystkie linie</li>
+<li><code>-b</code> numeruje niepuste linie</li>
+<li><code>-A</code> pokazuje znaki specjalne</li>
+</ul></li>
+<li><code>head</code> - wyświetla początkową część pliku o podanej
+nazwie lub danych wejściowych otrzymanych z potoku gdy nazwa pliku nie
+jest podana. Standardowo wyświetlanych jest pierwszych 10 linii
+odczytanych danych. Używając przełączników liczbę tą można zmienić:
+<ul>
+<li><code>-c</code> pozwala określić liczbę wyświetlanych znaków</li>
+<li><code>-n</code> pozwala określić liczbę wyświetlanych linii</li>
+</ul></li>
+<li><code>tail</code> - wyświetla końcową część pliku o podanej nazwie
+lub danych wejściowych otrzymanych z potoku, gdy nazwa pliku nie jest
+podana,. Standardowo wyświetlanych jest ostatnich 10 linii danych.
+Używając przełączników liczbę tą można zmienić:
+<ul>
+<li><code>-c</code> pozwala określić liczbę wyświetlanych znaków</li>
+<li><code>-n</code> pozwala określić liczbę wyświetlanych linii</li>
+<li><code>-f</code> powoduje, że dane po zapisaniu ich do pliku są
+wyświetlane na standardowym wyjściu</li>
+</ul></li>
+<li><code>sort</code> - służy do sortowania danych wejściowych, które to
+domyślnie sortowane są leksykograficznie. Sortowanie danych odbywa się
+liniami. Najważniejsze przełączniki:
+<ul>
+<li><code>-n</code> pozwala sortować numerycznie</li>
+<li><code>-b</code> ignoruje przy sortowaniu spacje znajdujące się na
+początku linii</li>
+<li><code>-t</code> pozwala zmienić domyślny separator kolumn, którym są
+znaki tabulacji lub spacji</li>
+<li><code>-f</code> pozwala ignorować przy sortowaniu wielkość
+liter</li>
+<li><code>-r</code> odwraca kolejność sortowania</li>
+<li><code>+liczba</code> pozwala by sortowanie odbywało się względem
+dowolnej kolumny (a nie początku linii). Liczba określa liczbę kolumn
+pominiętych przy sortowaniu</li>
+<li><code>-o nazwa_pliku</code> zapisuje rezultat sortowania do pliku o
+podanej nazwie</li>
+</ul></li>
+<li><code>uniq</code> - umożliwia usunięcie powtarzających się,
+sąsiadujących linii danych wejściowych.
+<ul>
+<li><code>-d</code> wyświetla z danych wejściowych tylko linie
+powtarzające się</li>
+<li><code>-u</code> wyświetla z danych wejściowych tylko linie
+unikalne</li>
+<li><code>-c</code> zlicza liczbę powtórzeń</li>
+</ul></li>
+<li><code>wc</code> - zlicza znaki, słowa i linie w podanych danych
+wejściowych. Standardowo wyświetlane są wszystkie trzy wartości, ale
+można to zmienić:
+<ul>
+<li><code>-l</code> pozwala zliczać tylko linie</li>
+<li><code>-w</code> pozwala zliczać tylko słowa</li>
+<li><code>-c</code> pozwala zliczać tylko znaki</li>
+</ul></li>
+<li><code>tr</code> - pozwala zamienić łańcuchy tekstowe, które podawane
+są jako argumenty wejściowe. Znaki z pierwszego łańcuch zamieniane są na
+znaki z drugiego łańcucha. Dodatkowo, dzięki przełącznikom możliwe jest
+następujące przetwarzanie:
+<ul>
+<li><code>-d</code> usuwa podane po przełączniku znaki</li>
+<li><code>-s</code> usuwa powtarzające się sąsiednie znaki</li>
+</ul></li>
+<li><code>cut</code> - pozwala wyświetlić fragmenty wierszy danych
+wejściowych. Zwykle jest to wycinanie odpowiednich kolumn
+<ul>
+<li><code>-c</code> pozwala określić pozycję znakowe wycinanych
+fragmentów wierszy, np. <code>-c 1-72</code> wyświetla pierwsze 72 znaki
+każdego wiersza</li>
+<li><code>-f</code> pozwala określić numery wycinanych kolumn, np.
+<code>-f1,3-5,10</code> wyświetla pierwszą kolumnę, kolumny od 3 do 5
+oraz kolumnę 10.</li>
+<li><code>-d</code> pozwala zmienić domyślny separator kolumn, którym
+jest znak tabulacji</li>
+</ul></li>
+<li><code>grep [opcje] wyrażenie [lista_plików]</code> - przeszukuje
+dane pochodzące ze standardowego wejścia lub pliki wyszczególnione na
+liście plików, wypisując tylko linie zawierające szukane wyrażenie.
+Szukane wyrażenie zapisywane jest za pomocą wyrażenia regularnego.
+Najważniejsze przełączniki:
+<ul>
+<li><code>-v</code> wyszukuje linie nie zawierające szukanego
+wzorca</li>
+<li><code>-c</code> podaje liczbę odszukanych wyrażeń</li>
+<li><code>-i</code> ignoruje wielkość liter przy wyszukiwaniu</li>
+<li><code>-n</code> wyświetla numery linii zawierających dany
+wzorzec</li>
+<li><code>-h</code> przy wyświetlaniu linii zawierających szukany
+wzorzec pomija nazwy plików</li>
+<li><code>-r</code> pozwala na przeszukiwanie rekurencyjne, np.
+<code>grep wzorzec -r katalog</code></li>
+<li><code>-l</code> pokazuje nazwy plików zawierających określony
+wzorzec</li>
+<li><code>-L</code> pokazuje nazwy plików nie zawierających określonego
+wzorca</li>
+</ul></li>
+</ul>
+<p>Zasady konstrukcji podstawowych wyrażeń regularnych opisujących
+szukany wzorzec są następujące: * <code>.</code> - reprezentuje dowolny
+znak * <code>[abc]</code> - oznacza jeden ze znaków a, b lub c *
+<code>[a-z]</code> - oznacza jeden ze znaków z podanego zakresu *
+<code>[^0-9]</code> - oznacza dopełnienie podanego zbioru (znaki inne
+niż od <code>0</code> do <code>9</code>) * <code>*</code> - reprezentuje
+powtórzenie dowolną liczbę razy (0 lub więcej) wyrażenia znajdującego
+się bezpośrednio po lewej stronie np: * <code>.*</code> oznacza dowolny
+ciąg znaków * <code>A[a]*</code> określa A, Aa, Aaa, Aaaaaaaaa, itd. *
+<code>^</code> - reprezentuje początek linii * <code>$</code> -
+reprezentuje koniec linii</p>
+<p>Domyślnie <code>grep</code> pracuje w uproszczonym trybie, gdzie
+znaki <code>?</code>, <code>+</code>, <code>{</code>, <code>}</code>,
+<code>|</code>, <code>(</code> oraz <code>)</code> traktowane są
+dosłownie. Aby uzyskać zgodność z wyrażeniami regularnymi stosowanymi w
+innych językach (<em>extended regular expressions</em>), należy stosować
+<code>grep</code> z przełącznikiem <code>-E</code> lub używać polecenia
+<code>egrep</code> (które wewnętrznie wywołuje <code>grep</code> z
+przełącznikiem <code>-E</code>). Rozbudowuje to dostępne znaczniki
+między innymi o:</p>
+<ul>
+<li><code>+</code> - jedno lub więcej wystąpień poprzedzającego
+znaku</li>
+<li><code>{n}</code> - n-krotne wystąpienie poprzedzającego znaku</li>
+<li><code>{n,}</code> - oznacza co najmniej n-krotne wystąpienie znaku
+występującego bezpośrednio po lewej stronie nawiasów</li>
+<li><code>{,m}</code> - oznacza co najwyżej m-krotne wystąpienie znaku
+występującego po lewej stronie nawiasów</li>
+<li><code>{n,m}</code> - oznacza co najmniej n-krotne i co najwyżej
+m-krotne wystąpienie znaku występującego po lewej stronie nawiasów</li>
+</ul>
+<p>Jeśli chcemy, aby znak mający znaczenie specjalne w wyrażeniach
+regularnych (np. <code>.</code>, <code>*</code>, <code>{</code>,
+<code>}</code>, <code>(</code>, <code>)</code>, <code>^</code>,
+<code>[</code>, <code>]</code>, <code>\</code>, <code>&lt;</code>,
+<code>&gt;</code>, <code>$</code>) został potraktowany dosłownie, musimy
+poprzedzić go backslashem (<code>\</code>). Ponadto, ponieważ wiele z
+wymienionych znaków ma w powłoce <code>bash</code> znaczenie specjalne,
+całe wyrażenie wpisane w konsoli należy umieścić w pojedynczym
+cudzysłowie (<code>'</code>), aby uniknąć ich interpretacji przez
+powłokę.</p>
+<h3 id="przykłady-potoków-z-wyrażeniami-regularnymi">Przykłady potoków z
+wyrażeniami regularnymi:</h3>
+<p>Proste wyrażenie regularne - przeszukuje plik <em>/etc/group</em> pod
+kątem słowa <em>student</em>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> student /etc/group</span></code></pre></div>
+<p>Zaawansowane wyrażenia:</p>
+<p>Wyświetla elementy znajdujące się w głównym katalogu, o nazwach
+zaczynających się na <code>s</code> i minimum trzech następujących
+dowolnych znakach:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> / <span class="kw">|</span> <span class="fu">egrep</span> <span class="st">'^s.{3,}'</span></span></code></pre></div>
+<p>Listuje zawartość pliku <em>/etc/hosts</em>, sortuje ją, a następnie
+przeszukuje pod kątem wystąpienia <em>adresu IP</em> - liczby w formacie
+<em>w.x.y.z</em>, gdzie <em>w</em>, <em>x</em>, <em>y</em> oraz
+<em>z</em> to liczby o od 1 do 3 cyfr. Zwróć uwagę na backslash przed
+kropkami powodujący, że kropka jest traktowana dosłownie, a nie jako
+dowolny znak:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> /etc/hosts <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">egrep</span> <span class="st">'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'</span></span></code></pre></div>
+<h2 id="nowa-linia-na-końcu-pliku">Nowa linia na końcu pliku</h2>
+<p>Zwyczajowo w systemach uniksowych pliki tekstowe (konfiguracyjne,
+źródłowe, skrypty itp.) zakończone są znakiem nowej linii. Niektóre
+edytory (np. <code>nano</code>) same dodają znak nowej linii przy każdej
+edycji pliku.</p>
+<p>Niektóre z przedstawionych poleceń mogą wymagać obecności znaku końca
+linii w ostatnim wierszu. W przypadku problemów z wczytywaniem
+ostatniego wiersza możesz to zweryfikować wyświetlając plik np.
+<code>cat</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">student@vbox-xubuntu-rtos:~$</span> cat zly_plik </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> jest linia tekstu</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> jest kolejna liniastudent@vbox-xubuntu-rtos:~$ cat dobry_plik </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ex">A</span> tu jest zawartosc innego pliku</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Zakonczonego</span> znakiem nowej linii</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">student@vbox-xubuntu-rtos:~$</span> </span></code></pre></div>
+<p>Zwróć uwagę, że po wyświetleniu pliku nie zakończonego znakiem nowej
+linii znak zachęty (<code>student@vbox...</code>) wyświetla się w tym
+samym wierszu, co zawartość pliku.</p>
+<h2 id="zadania-do-samodzielnego-wykonania">Zadania do samodzielnego
+wykonania</h2>
+<ol type="1">
+<li>Wyświetl plik <em>/etc/passwd</em> z podziałem na strony przyjmując,
+że strona ma 5 linii tekstu. <strong>Podpowiedź:</strong> sprawdź
+program <code>more</code> <pre>more -5 /etc/passwd</pre></li>
+<li>Stwórz pliki <em>tekst1</em> oraz <em>tekst2</em>, wypełnij kilkoma
+linijkami tekstu. Korzystając z polecenia <code>cat</code> utwórz plik
+<em>tekst3</em>, który będzie składał się z zawartości plików
+<em>tekst1</em> oraz <em>tekst2</em>.
+<pre>echo -e "Linia 1\nLinia 2" &gt; tekst1
+echo -e "Linia 3\nLinia 4" &gt; tekst2
+cat tekst1 tekst2 &gt; tekst3</pre></li>
+<li>Wyświetl po 5 pierwszych linii wszystkich plików w swoim katalogu
+domowym w taki sposób, aby nie były wyświetlane ich nazwy.
+<strong>Podpowiedź:</strong> pamiętaj, że z programami, które przyjmują
+jako argumenty nazwy plików możesz używać <strong>wzorców</strong>.<pre>head -q -n 5 ~/*</pre></li>
+<li>Wyświetl linie o numerach 3, 4 i 5 z pliku <em>/etc/passwd</em><pre>head -n 5 /etc/passwd | tail -n 3</pre></li>
+<li>Wyświetl linie o numerach 7, 6 i 5 licząc od końca pliku
+<em>/etc/passwd</em> (czyli kolejno 7. od końca, 6. od końca i 5. od
+końca)<pre>tail -n 7 /etc/passwd | head -n 3</pre></li>
+<li>Wyświetl zawartość <em>/etc/passwd</em> w jednej linii<pre>cat /etc/passwd | tr '\n' ' '</pre></li>
+<li>Za pomocą filtru <code>tr</code> wykonaj modyfikację pliku,
+polegającą na umieszczeniu każdego słowa (oddzielonych spacją) w osobnej
+linii. <strong>Podpowiedź:</strong> aby przekazać znak spacji jako
+argument, musisz umieścić go w cudzysłowie<pre>cat tekst3 | tr " " "\n"</pre></li>
+<li>Zlicz wszystkie pliki znajdujące się w katalogu <em>/etc</em> i jego
+podkatalogach <pre>find /etc -type f | wc -l</pre></li>
+<li>Napisz polecenie zliczające sumę znaków z pierwszych trzech linii
+pliku <em>/etc/passwd</em> <pre>head -n 3 /etc/passwd | wc -m</pre> </li>
+<li>Wyświetl listę plików z aktualnego katalogu, zamieniając wszystkie
+małe litery na duże. <pre>find ~/* -maxdepth 1 -type f | tr 'a-z' 'A-Z'</pre></li>
+<li>Wyświetl listę praw dostępu do plików w aktualnym katalogu, ich
+rozmiar i nazwę <pre>ls -l | tr -s ' ' | cut -d ' ' -f 1,5,9</pre></li>
+<li>Wyświetl listę plików w aktualnym katalogu, posortowaną według
+rozmiaru pliku <pre>ls -lS</pre> </li>
+<li>Wyświetl zawartość pliku <em>/etc/passwd</em> posortowaną wg numerów
+<em>UID</em> w kolejności od największego do najmniejszego <pre>sort -t ':' -k 3 -n -r /etc/passwd</pre> </li>
+<li>Wyświetl zawartość pliku <em>/etc/passwd</em> posortowaną najpierw
+wg numerów <em>GID</em> w kolejności od największego do najmniejszego, a
+następnie <em>UID</em> <pre>sort -t ':' -k 4,4nr -k 3,3nr /etc/passwd</pre> </li>
+<li>Podaj nazwy trzech najmniejszych plików w katalogu posortowane wg
+nazwy <pre>ls -Sr | head -n 3 | sort</pre></li>
+<li>W pliku <code>/etc/services</code> przechowywana jest lista
+popularnych usług sieciowych, wraz z numerami portów i protokołem.
+Wylistuj (tylko) nazwy usług, które korzystają z protokołu
+<code>UDP</code>. <pre>grep '/udp' /etc/services | tr -s ' \t' ' ' | cut -d ' ' -f 1</pre> </li>
+<li>Wyświetl, ile wirtualnych terminali (<code>dev/tty</code>) o
+numerach z zakresu <em>50-69</em> znajduje się w systemie.<pre>ls /dev/tty[5-6][0-9] | wc -l</pre></li>
+<li>Zbuduj potok, który wyświetli w terminalu PID procesu
+<strong>cupsd</strong>. <pre>ps -e | grep cupsd | grep -v grep | awk '{print $1}'</pre> </li>
+</ol>
+<hr>
+<p>Autorzy: <em>Adam Bondyra, Jakub Tomczyński</em></p>
+<p>Opracowano na podstawie materiałów projektu <em>Otwartych Studiów
+Informatycznych (http://wazniak.mimuw.edu.pl/)</em>.</p>
+</main>
+
+
+</body></html>

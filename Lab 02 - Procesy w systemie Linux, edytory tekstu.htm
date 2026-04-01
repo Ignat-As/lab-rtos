@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang=""><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Lab 02 - Procesy w systemie Linux, edytory tekstu</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="Lab%2002%20-%20Procesy%20w%20systemie%20Linux,%20edytory%20tekstu_files/github-markdown-light.css">
+  <link rel="stylesheet" href="Lab%2002%20-%20Procesy%20w%20systemie%20Linux,%20edytory%20tekstu_files/custom.css">
+  <link rel="icon" type="image/x-icon" href="https://put-jug.github.io/lab-rtos/_static/favicon.ico">
+  <script>
+  MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+      fontCache: 'global'
+      }
+  };
+  </script>
+  <script src="Lab%2002%20-%20Procesy%20w%20systemie%20Linux,%20edytory%20tekstu_files/polyfill.min.js"></script>
+  <script id="MathJax-script" async="" src="Lab%2002%20-%20Procesy%20w%20systemie%20Linux,%20edytory%20tekstu_files/tex-mml-chtml.js"></script>
+<style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style></head>
+<body>
+<main class="markdown-body">
+<header id="title-block-header">
+<h1 class="title">Lab 02 - Procesy w systemie Linux, edytory tekstu</h1>
+</header>
+<h1 id="procesy-w-systemie-linux-ssh-edytory-tekstu">Procesy w systemie
+Linux, ssh, edytory tekstu</h1>
+<h2 id="procesy">Procesy</h2>
+<h3 id="pojęcie-procesu">Pojęcie procesu</h3>
+<p>Każdy uruchomiony w systemie Unix program nosi nazwę procesu. Na
+proces składają się następujące elementy:</p>
+<ul>
+<li>Kod binarny procesu załadowany z pliku.</li>
+<li>Dane programu: struktury danych zadeklarowane w programie oraz
+pamięć dynamicznie przydzielona do procesu w trakcie jego
+działania.</li>
+<li>Dane systemowe: informacja o procesie utrzymywana przez system.</li>
+</ul>
+<p>Dodatkowo, podczas tworzenia procesu system inicjalizuje systemowe
+struktury danych opisujące proces, które następnie są aktualizowane
+podczas wykonania tego procesu. Do danych systemowych należą:</p>
+<ul>
+<li>Identyfikator procesu (PID) - unikalna liczba całkowita
+jednoznacznie identyfikująca proces.</li>
+<li>Identyfikator procesu macierzystego (PPID) - wartość PID procesu,
+który stworzył dany proces.</li>
+<li>Środowisko procesu - zbiór zmiennych środowiskowych. Każdy proces ma
+swoje, niezależne od innych procesów środowisko wykonania, które
+początkowo jest kopiowane z procesu-rodzica a następnie jest
+modyfikowane niezależnie od innych procesów.</li>
+<li>Standardowe strumienie danych.</li>
+</ul>
+<p>Oprócz procesów, w systemie Unix, jak w większości nowoczesnych
+systemów, wyróżnia się wątki (ang. thread), będące najmniejszymi
+aktywnymi elementami systemu. Wątek jest rodzajem procesu, który dzieli
+przestrzeń adresową z innym procesem - każdemu wątkowi jest więc
+przydzielony niezależny identyfikator.</p>
+<h3 id="procesy-w-systemie">Procesy w systemie</h3>
+<p>Listę procesów dla aktualnej powłoki otrzymamy wywołując polecenie
+<code>ps</code> (ang. processes).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">PID</span>             TTY             TIME               CMD</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">14285</span>           pts/0           0:00               <span class="at">-csh</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">14286</span>           pts/0           0:00               ps</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">^^^^^^</span>          ^^^^^^          ^^^^^              ^^^^^</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">numer</span> procesu   terminal        czas aktywności    nazwa</span></code></pre></div>
+<p>Pełne informacje o procesach aktualnej powłoki podaje polecenie
+<code>ps -f</code> (ang. <em>full</em>)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ps</span> <span class="at">-f</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">UID</span>           PID        PPID     C    STIME        TTY         TIME        CMD</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">student</span>       1633       1625     0    06:00        pts/0       00:00:00    bash</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">student</span>       2666       1633     0    06:14        pts/0       00:00:00    nano plik.txt</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">student</span>       2855       1633     0    11:26        pts/0       00:00:00    ps <span class="at">-f</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">^^^^^^</span>        ^^^^^      ^^^^^^^^      ^^^^^^^      ^^^^^^      ^^^^^       ^^^^^</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">nazwa</span>         numer      numer         czas         terminal    czas        nazwa procesu</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">właściciela</span>   procesu    procesu       uruchomienia</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                         <span class="ex">nadrzędnego</span></span></code></pre></div>
+<p>Pełne informacje o wszystkich procesach uzyskamy łącząc opcję
+<code>-f</code> z <code>-e</code> (ang. <em>every process</em>). Poniżej
+podano inne przydatne przełączniki polecenia <code>ps</code>: *
+<code>-w</code> powoduje rozszerzenie wyświetlanej listy *
+<code>-l</code> (ang. <em>long</em>) pozwala wyświetlić dodatkowe
+informacje o każdym procesie - w rezultacie wyświetlane są dodatkowe
+kolumny zawierające następujące informacje: * <code>S</code> - status
+procesu ( <code>S</code> - proces jest uśpiony; <code>R</code> - proces
+jest aktualnie wykonywany, <code>T</code> - zatrzymany) *
+<code>UID</code> - indentyfikator właściciela procesu *
+<code>PPID</code> - identyfikator procesu macierzystego *
+<code>PRI</code> i <code>NI</code> - opisują priorytety procesów *
+<code>WCHAN</code> - pozwala sprawdzić jaką funkcję systemową jądra
+wywołał proces</p>
+<p>Wiele z procesów uruchamianych jest przy starcie systemu, pozostałe
+są uaktywniane przez użytkowników w momencie zlecenia wywołania
+programów. Dowolny proces może uruchomić kolejny proces potomny i stać
+się macierzystym (nadrzędnym) wobec tego procesu potomnego. W momencie
+zarejestrowania się użytkownika w systemie uruchomiony zostaje jego
+pierwszy proces, czyli powłoka interpretująca polecenia użytkownika.</p>
+<p>Wszystkie procesy pracujące w systemie tworzą hierarchiczną
+strukturę, na szczycie której stoi proces <code>init</code>, będący
+rodzicem wszystkich procesów. Proces <code>init</code> ma zawsze wartość
+<code>PID</code> równą 1. Hierarchię procesów można obserwować
+korzystając z programu <code>pstree</code>. W systemie Ubuntu, na
+szczycie drzewa wyświetlanego przez <code>pstree</code> znajdziemy
+proces <em>systemd</em>, a nie <em>init</em>. Wynika to z faktu, że
+<em>init</em> jest w tym systemie aliasem (dowiązaniem symbolicznym) do
+programu <em>systemd</em> - możesz to potwierdzić komendą
+<code>ls -l /sbin/init</code>.</p>
+<p>Istnieje także interaktywna wersja komendy <code>ps</code> - program
+<code>top</code>, gdzie oprócz wartości zwracanych przez polecenie
+<code>ps</code> wyświetlane są też inne informacje: aktualna liczbę
+użytkowników w systemie i średnie obciażenie (linia pierwsza), liczba
+procesów i ich stany(linia druga), obciążenie procesora (linia trzecia)
+i informację nt. dostępnej pamięci w systemie (linie czwarta i
+piąta).</p>
+<h3 id="usuwanie-procesów">Usuwanie procesów</h3>
+<p>Dowolny proces może zostać usunięty z systemu przez jego właściciela.
+Służy do tego polecenie <code>kill</code>, wysyłające do procesu o
+podanym identyfikatorze sygnał przerwania pracy:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> [ <span class="at">-nazwa_lub_numer_sygnału</span> ] identyfikator_procesu</span></code></pre></div>
+<p>Domyślnie, jeśli nie podano numeru sygnału, wysłany zostanie sygnał
+<code>TERM</code>, powodujący zatrzymanie procesu. Aktualnie uruchomiony
+proces można również przerwać naciskając w konsoli kombinację
+<strong>Ctrl-C</strong>, co również powoduje wysłanie sygnału
+<code>TERM</code>. Gdy wysłanie sygnału <code>TERM</code> jest
+niewystarczające do zatrzymania procesu, należy wtedy wysłać sygnał
+<code>KILL</code>, który powoduje bezwarunkowe przerwanie procesu:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> <span class="at">-KILL</span> identyfikator_procesu</span></code></pre></div>
+<p>Sygnały mają przypisane numeryczne identyfikatory. Identyfikator
+sygnału <code>TERM</code> wynosi 15, natomiast sygnału <code>KILL</code>
+jest równy 9. W poleceniu <code>kill</code> można korzystać także z
+wartości numerycznych synałów:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">kill</span> <span class="at">-9</span> identyfikator_procesu</span></code></pre></div>
+<p>Zatrzymanie wszystkich procesów o danej nazwie powoduje polecenie
+<code>killall</code>. Przykładowo:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">killall</span> find</span></code></pre></div>
+<p>powoduje zatrzymanie wszystkich programów <code>find</code>.</p>
+<p>Szczegółową listę sygnałów wraz z ich wartościami numerycznymi
+zawiera strona pomocy systemowej <em>signal(7)</em> (komenda
+<code>man 7 signal</code>). Skróconą listę dostępnych sygnałów można
+uzyskać poprzez wywołanie <code>kill -l</code>.</p>
+<h3 id="zarządzanie-procesami">Zarządzanie procesami</h3>
+<p>Procesy uruchamiane z klawiatury terminala są nazywane
+pierwszoplanowymi. Powłoka czeka na zakończenie wykonywania procesu i
+dopiero wtedy jest gotowa na przyjęcie kolejnych poleceń od
+użytkownika.</p>
+<p>Proces można jednak uruchomić w tle. Wówczas powłoka utworzy nowy
+proces potomny, będący powłoką, której nakaże wykonanie zadanego
+polecenia, a sama powróci do stanu gotowości na kolejne polecenia. W
+rezultacie proces, który został uruchomiany w tle zaczyna pracować
+równolegle z interpreterem poleceń.</p>
+<p>Warto zaznaczyć, że praca w tle ma sens jedynie w przypadku programów
+nieinteraktywnych, czyli takich, które do swojej pracy nie potrzebują
+interakcji za strony użytkownika. W przypadku uruchamiania programu w
+tle interpreter poleceń natychmiast przechodzi w stan oczekiwania na
+następne zlecenie, czyli rozpoczyna czytanie danych z klawiatury.
+Podobnie, programy działające w tle nie powinny wypisywać informacji na
+ekranie, bo będą one wypisywane asynchronicznie w stosunku do aktualnie
+wykonywanych operacji. W tym przypadku, rozwiązaniem tego problemu może
+być przekierowanie wyników działania takiego programu do pliku i jego
+późniejsza analiza.</p>
+<p>Polecenie jest uruchomione w tle, jeśli po ostatnim parametrze
+natępuje znak &amp;:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">polecenie</span> <span class="kw">&amp;</span></span></code></pre></div>
+<p>Aktualnie uruchomiony proces można także zatrzymać wciskając
+kombinację <strong>Ctrl-Z</strong>. Spowoduje to wstrzymanie tego
+procesu. Wstrzymany proces istnieje w systemie, ale nie jest dla niego
+przydzielany procesor. Zastopowany proces można wprowadzić do wykonania
+(kontynuacji) w tle poleceniem <code>bg</code> (ang.
+<em>background</em>), a nawet przywrócić po dowolnym czasie z powrotem
+na pierwszy plan poleceniem <code>fg</code> (ang. <em>foreground</em>),
+pod warunkiem jednak, że pomiędzy tymi poleceniami nie uruchomimy w tle
+innego procesu. Listę aktualnie kontrolowanych zadań można wyświetlić
+poleceniem <code>jobs</code>.</p>
+<p>Jeśli wstrzymano więcej niż jedno zadanie, niezbędna będzie ich
+identyfikacja. Interpreter poleceń wewnętrznie przydziela swoje
+identyfikatory i za pomocą polecenia <code>jobs</code> można wyświetlić
+ich wartości. Do konkretnego procesu można odwołać się korzystając z
+jego identyfikatora.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">jobs</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[1]-</span>    Stopped     vim praca.html</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[2]+</span>    Stopped find /usr <span class="at">-name</span> signal.h</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">fg</span> 1</span></code></pre></div>
+<h3 id="status-zakończenia-procesu">Status zakończenia procesu</h3>
+<p>Każdy proces w systemie Unix po zakończeniu swojej pracy przekazuje
+do systemu informację o tym jak zakończyło się przetwarzanie, określaną
+statusem zakończenia procesu. Status zakończenia jest liczbą
+jednobajtową, przy czym przyjęto, że wartość 0 oznacza poprawne
+zakończenie przetwarzania. Wartości różne od 0 oznaczają błąd. Status
+zakończenia ostatnio wykonywanego programu można uzyskać w następujący
+sposób:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$?</span></span></code></pre></div>
+<p>Status zakończenia procesu można wykorzystać do warunkowego
+uruchomiania poleceń. Fakt, że <code>polecenie_2</code> można wykonać
+tylko gdy <code>polecenie_1</code> zakończyło się sukcesem zapisujemy
+następująco:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">polecenie_1</span> <span class="kw">&amp;&amp;</span> <span class="ex">polecenie_2</span> </span></code></pre></div>
+<p>Natomiast gdy <code>polecenie_2</code> może być wykonane tylko wtedy
+gdy polecenie <code>polecenie_1</code> zakończyło się
+niepowodzeniem:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">polecenie_1</span> <span class="kw">||</span> <span class="ex">polecenie_2</span></span></code></pre></div>
+<p>Ponadto w systemie UNIX możemy jednym poleceniem uruchomić kilka
+procesów jeden po drugim, nie zważając na wynik poprzednich, oddzielając
+poszczególne z nich średnikiem (jest to odpowiednik wpisania każdego
+polecenia w oddzielnej linii i zatwierdzania enterem):</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">polecenie_1</span><span class="kw">;</span> <span class="ex">polecenie_2</span><span class="kw">;</span> <span class="ex">polecenie_3</span></span></code></pre></div>
+<p>Taką sekwencję można również wprowadzić w tło:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">polecenie_1</span><span class="kw">;</span> <span class="ex">polecenie_2</span><span class="kw">;</span> <span class="ex">polecenie_3</span><span class="kw">)</span> <span class="kw">&amp;</span></span></code></pre></div>
+<hr>
+<h3 id="zadania-do-samodzielnego-wykonania">Zadania do samodzielnego
+wykonania</h3>
+<ol type="1">
+<li>Wyświetl listę własnych procesów komendą <code>ps</code>. Porównaj
+wyniki z wynikami poleceń: <code>ps ­x</code> i <code>ps ­ax</code>.</li>
+<li>Zaloguj się do systemu kilkukrotnie poprzez wirtualne konsole lub
+otwierając nowe okno w środowisku graficznym. Każdorazowo sprawdź
+poleceniem <code>tty</code> nazwę terminala, na którym pracujesz. <pre> Ctrl + Alt + T - nowe okno terminala // Ctrl + Alt + F2 do F6 - konsole tekstowe</pre> </li>
+<li>Wyświetl hierarchię procesów poleceniem <code>pstree</code>.</li>
+<li>Obejrzyj listę procesów poleceniem <code>top</code> sortując ją wg
+stopnia zajętości procesora i ilości zajętej pamięci (sprawdź
+przełącznik <code>-o</code>)</li>
+<li>Wykonaj kolejno następujące kroki:</li>
+</ol>
+<ul>
+<li>Uruchom polecenie <code>sleep</code> na 30 sekund. Od razu wstrzymaj
+je kombinacją <strong>Ctrl-Z</strong>.</li>
+<li>Uruchom <em>w tle</em> kolejne polecenie <code>sleep</code>, tym
+razem na 3600 sekund.</li>
+<li>Wyświetl aktywne zadania w bieżącej sesji komendą
+<code>jobs</code>.</li>
+<li>Sprawdź odpowiednim poleceniem <code>ps</code> status
+(uruchomiony/wstrzymany) uruchomionych w bieżącej sesji programów.</li>
+<li>Przywróć w tle działanie wstrzymanego sleep.</li>
+<li>Sprawdzaj aktywne zadania poleceniem <code>jobs</code> aż do
+zakończenia <code>sleep 30</code></li>
+<li>Zakończ <code>sleep 3600</code> przywracając go na pierwszy plan i
+zamykając kombinacją <strong>Ctrl-C</strong>.</li>
+</ul>
+<ol start="6" type="1">
+<li>Uruchom w tle sekwencję
+<code>sleep 1000 ; touch sleep_finished</code>. Sprawdź czy istnieje
+plik <em>sleep_finished</em>. Zakończ proces <em>sleep</em> sygnałem
+<em>TERM</em>. Sprawdź ponownie istnienie pliku
+<em>sleep_finished</em>.<pre>pkill -TERM sleep</pre> </li>
+<li>Uruchom aplikację z GUI, np. edytor tekstu <em>Mousepad</em>.
+Sprawdź jego PID. Wyślij do jego procesu sygnał <em>STOP</em>, sprawdź
+czy aplikacja reaguje. Wyślij sygnał <em>CONT</em>.</li>
+<li>Utwórz w swoim katalogu domowym folder o nazwie
+<code>readonly</code>. Usuń prawa do zapisu w nim. Następnie wykonaj
+komendę, która spróbuje utworzyć w nim plik, a w przypadku niepowodzenia
+wyświetli komunikat <strong>ERROR</strong> (polecenie
+<code>echo ERROR</code>). 
+<pre>mkdir readonly 
+chmod 555 readonly
+  touch readonly/plik.txt || echo ERROR</pre></li>
+<li>Sprawdź informacje o tym na jakim procesorze obecnie pracujesz. W
+tym celu odczytaj zawartość pliku <code>cpuinfo</code> poleceniem
+<code>cat /proc/cpuinfo</code>.</li>
+<li>Sprawdź informacje o wykorzystaniu pamięci RAM. W tym celu odczytaj
+zawartość pliku <code>meminfo</code> poleceniem
+<code>cat /proc/meminfo</code>.</li>
+</ol>
+<hr>
+<h2 id="zdalne-zarządzanie-przez-sieć">Zdalne zarządzanie przez
+sieć</h2>
+<h3 id="ssh">SSH</h3>
+<p>SSH (<em>secure shell</em>) to popularny standard protokołu
+komunikacyjnego pozwalający m.in. na zdalne wykonywanie poleceń przez
+sieć TCP/IP za pośrednictwem terminala. Połączenie jest szyfrowane i
+uwierzytelnione np. hasłem lub certyfikatem.</p>
+<p>Użytkownik, przy pomocy <em>klienta SSH</em>, łączy się z
+akceptującym połączenia zdalne <em>serwerem SSH</em>, dzięki czemu może
+wykonywać z poziomu maszyny <em>klienta</em> polecenia i uruchamiać
+programy konsolowe na <em>serwerze</em>.</p>
+<p>Większość dystrybucji ma domyślnie zainstalowanego klienta SSH,
+serwer należy często doinstalować z repozytoriów.</p>
+<p>W aktualnym systemie Windows 10/11, klient SSH również jest domyślnie
+zainstalowany. W starszych wersjach systemu Windows można doinstalować
+klient i serwer w postaci <em>OpenSSH for Windows</em>, bądź wykorzystać
+popularny graficzny klient SSH <em>Putty</em>. Otwórz terminal w
+systemie Windows/Linux i połącz się z gościem poleceniem
+<code>ssh [user@]host</code>, na przykład:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> student@192.168.56.3</span></code></pre></div>
+<p>Przy pierwszym połączeniu z danym komputerem zdalnym, klient poprosi
+o potwierdzenie tożsamości hosta (wpisujemy <em>yes</em>). Po poprawnym
+połączeniu ukaże się znak zachęty taki, jak na komputerze, z którym się
+łączymy. Sesję kończymy poleceniem <code>exit</code>.</p>
+<p>Przydatne zaawansowane przełączniki klienta SSH:</p>
+<ul>
+<li><code>-p port</code> - zmienia docelowy port (domyślnie 22)</li>
+<li><code>-L port_lokalny_klienta:host:port_zdalny</code> - <em>local
+port forwarding</em>, tuneluje <code>port_lokalny_klienta</code> z
+klienta SSH na <code>port_zdalny</code> serwera <code>host</code> przez
+serwer SSH</li>
+<li><code>-R port_lokalny_serwera:host:port_zdalny</code> - <em>remote
+port forwarding</em>, tuneluje <code>port_lokalny_serwera</code> z
+serwera SSH na <code>port_zdalny</code> komputera <code>host</code>
+przez klienta SSH</li>
+<li><code>-D port</code> - <em>dynamic port forwarding</em> - otwiera
+proxy SOCKS na porcie <code>port</code> klienta</li>
+</ul>
+<p>Przekierowywanie portów (tunelowanie) SSH pozwala m.in. przesyłać
+dane po bezpiecznym, szyfrowanym połączeniu, ominąć ograniczenia
+sieciowe w postaci zablokowanych portów lub uruchomić prosty serwer
+proxy dla przeglądarki WWW.</p>
+<h3 id="scp"><code>scp</code></h3>
+<p>Częścią pakietu OpenSSH są programy <code>scp</code> oraz
+<code>sftp</code>, wykorzystujące protokół SSH do zdalnej wymiany
+plików.</p>
+<p>Program <code>scp</code> pozwala na kopiowanie plików z/na zdalny
+komputer, na którym uruchomiony jest serwer SSH, w analogiczny sposób do
+programu <code>cp</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> source destination</span></code></pre></div>
+<p>Zarówno <code>source</code> jak i <code>destination</code> mogą być
+lokalnymi ścieżkami do pliku lub ścieżką do pliku na serwerze SSH w
+postaci <code>[user@]host:[path]</code>.</p>
+<p>Przykładowe wywołania:</p>
+<p>Kopiowanie pliku na zdalny komputer, do katalogu domowego:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> dane.txt student@192.168.56.3:/home/student</span></code></pre></div>
+<p>Kopiowanie pliku ze zdalnego komputera</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scp</span> student@192.168.56.3:/etc/resolv.conf resolv.conf</span></code></pre></div>
+<hr>
+<h4 id="zadania-do-samodzielnego-wykonania-1">Zadania do samodzielnego
+wykonania</h4>
+<p>Korzystając z połączenia SSH (<em>serwer</em> oznacza w tym przypadku
+maszynę zdalną):</p>
+<ol start="11" type="1">
+<li>Wyświetl procesy o największym użyciu procesora.</li>
+<li>Sprawdź zawartość katalogu domowego</li>
+</ol>
+<p>Korzystając z SCP pod Windowsem:</p>
+<ol start="13" type="1">
+<li>Utwórz na hoście (w Notatniku) plik tekstowy zawierający kilka
+linijek tekstu i prześlij go do serwera. Wyświetl go w zdalnej konsoli
+(po SSH).</li>
+<li>Skopiuj z serwera wszystkie pliki z rozszerzeniem <code>.conf</code>
+znajdujące się w katalogu <code>/etc</code>.</li>
+</ol>
+<hr>
+<h2 id="edytory-tekstu-nano-vim">Edytory tekstu <code>nano</code>,
+<code>vim</code></h2>
+<p>W pracy z systemami, które nie posiadają środowiska graficznego lub
+poprzez zdalny terminal często zachodzi konieczność edycji plików
+tekstowych z poziomu terminala. Sprawna edycja plików tekstowych możliwa
+jest dzięki konsolowym edytorom takim jak <em>Emacs</em>, <em>Vim</em>
+czy <em>Nano</em>.</p>
+<p>Osoby posługujące się takimi edytorami na co dzień znają mnóstwo
+skrótów i trików, które powodują, że praca z takim programem może być
+sprawniejsza niż z edytorem graficznym.</p>
+<p>Na potrzeby sporadycznej edycji plików, np. konfiguracyjnych,
+najprostszy w użyciu jest program <em>Nano</em>. Oferuje on
+quasi-graficzny interfejs z podpowiedziami skrótów klawiszowych.</p>
+<p>Przykładowe użycie (jeśli plik nie istnieje, zostanie utworzony):</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> plik.txt</span></code></pre></div>
+<p>Najważniejsze skróty: * <strong>Ctrl-o</strong> - zapisz *
+<strong>Ctrl-x</strong> - wyjdź * <strong>Ctrl-k</strong> - wytnij tekst
+(domyślnie bieżąca linia) * <strong>Ctrl-u</strong> - wklej tekst</p>
+<p>W przypadku konieczności edycji pliku pod systemem, gdzie program
+<em>Nano</em> jest niedostępny (i nie chcemy lub nie możemy go
+zainstalować), istnieje bardzo duża szansa, że zainstalowany jest
+program <em>Vim</em>.</p>
+<p>Przykładowe użycie (jeśli plik nie istnieje, zostanie utworzony):</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vim</span> plik.txt</span></code></pre></div>
+<p>Najważniejsze skróty klawiszowe:</p>
+<ul>
+<li><code>i</code> - przechodzi w tryb edycji, pozwala na wprowadzenie
+tekstu</li>
+<li><code>Esc</code> - wychodzi z trybu edycji lub przerywa wpisywanie
+komendy</li>
+</ul>
+<p>Komendy (zatwierdzane enterem):</p>
+<ul>
+<li><code>:w</code> - zapisz</li>
+<li><code>:q</code> - wyjdź</li>
+<li><code>:q!</code> - wyjdź bez zapisywania</li>
+<li><code>:x</code> - zapisz i wyjdź</li>
+</ul>
+<hr>
+<h3 id="zadania-do-samodzielnego-wykonania-2">Zadania do samodzielnego
+wykonania</h3>
+<ol start="15" type="1">
+<li>Korzystając z <em>Nano</em> zwiększ rozmiar przechowywanej historii
+<em>bash</em> (wartość <code>HISTSIZE</code> w pliku
+<code>.bashrc</code> w katalogu domowym na serwerze)</li>
+<li>Korzystając z <em>Vim</em>-a wyedytuj dowolny plik tekstowy.</li>
+<li>Uruchom w pojedynczej konsoli, <strong>w tle</strong> trzy edytory
+nano, dla trzech różnych plików. Sprawdź procesy działające w tle w
+bieżącym terminalu komendą <code>jobs</code>. Naucz się przywracać
+wybrany proces na pierwszy plan.</li>
+</ol>
+<hr>
+<p>Autorzy: <em>Adam Bondyra, Jakub Tomczyński</em></p>
+<p>Opracowano na podstawie materiałów projektu <em>Otwartych Studiów
+Informatycznych (http://wazniak.mimuw.edu.pl/)</em>.</p>
+</main>
+
+
+</body></html>
