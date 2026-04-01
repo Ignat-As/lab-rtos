@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang=""><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Lab 05 - powtorka przed Kolokwium</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="Lab%2005%20-%20powtorka%20przed%20Kolokwium_files/github-markdown-light.css">
+  <link rel="stylesheet" href="Lab%2005%20-%20powtorka%20przed%20Kolokwium_files/custom.css">
+  <link rel="icon" type="image/x-icon" href="https://put-jug.github.io/lab-rtos/_static/favicon.ico">
+  <script>
+  MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+      fontCache: 'global'
+      }
+  };
+  </script>
+  <script src="Lab%2005%20-%20powtorka%20przed%20Kolokwium_files/polyfill.min.js"></script>
+  <script id="MathJax-script" async="" src="Lab%2005%20-%20powtorka%20przed%20Kolokwium_files/tex-mml-chtml.js"></script>
+<style type="text/css">.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+</style><style type="text/css">.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+</style><style type="text/css">.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 & Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+</style><style id="MJX-CHTML-styles">
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row > * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+</style></head>
+<body>
+<main class="markdown-body">
+<header id="title-block-header">
+<h1 class="title">Lab 05 - powtorka przed Kolokwium</h1>
+</header>
+<h1 id="powtórka-przed-kolokwium-linux">Powtórka przed Kolokwium
+(Linux)</h1>
+<h2 id="dodatkowe-zadania">Dodatkowe zadania:</h2>
+<ol type="1">
+<li><p>Napisz skrypt, który znajdzie w katalogu podanym jako argument do
+skryptu wszystkie pliki z rozszerzeniem <em>sh</em>, modyfikowane nie
+dawniej niż 7 dni temu i nada im prawo do wykonywania.</p><pre><span style="background-color:#FFFFFF"><font color="#300A24">  GNU nano 6.2                                   revision01.sh                                             </font></span>
+<font color="#2AA1B3">#!/bin/bash</font>
+Katalog<font color="#26A269">=</font><font color="#A2734C"><b>"$1"</b></font>
+
+find <font color="#A2734C"><b>"$Katalog"</b></font> -type f -name <font color="#A2734C"><b>"*.sh"</b></font> -mtime -7 -<font color="#26A269">exec</font> <font color="#12488B"><b>chmod</b></font> +x <font color="#26A269">{}</font> +<font color="#26A269">\</font>
+</pre>
+</li>
+<li><p>Napisz skrypt który policzy liczbę linii zawierających słowo
+“color” w pliku ~/.bashrc</p><pre>grep -c "color" ~/.bashrc</pre></li>
+<li><p>System linux loguje wiadomości w pliku tekstowym
+/var/log/kern.log. Wypisz z tego pliku 3 ostatnie zdarzenia dotyczące
+urządzeń USB.</p><pre>grep -i "usb" /var/log/kern.log | tail -n 3</pre></li>
+<li><p>Polecenie <code>ifconfig</code> pozwala zobaczyć konfigurację
+interfejsów sieciowych, m.in. adresy IP, MAC, liczby transferowanych
+danych (linia zaczynająca się od ‘RX packets’ wskaże ile danych zostało
+pobranych). Przykładowo, będąc podłączonym do WiFi z telefonu, można
+zobaczyć ile danych już zużyliśmy.</p></li>
+</ol>
+<ul>
+<li>Napisz skrypt, który wypisze ilość bajtów pobraną przez interfejs
+sieciowy, który pobrał tych danych najwięcej <pre>ifconfig <font color="#26A269">|</font> <font color="#12488B"><b>grep</b></font> -oE <font color="#A2734C"><b>'RX.*bytes[ :]*[0-9]+'</b></font> <font color="#26A269">|</font> <font color="#12488B"><b>grep</b></font> -oE <font color="#A2734C"><b>'[0-9]+$'</b></font> <font color="#26A269">|</font> <font color="#12488B"><b>sort</b></font> -nr <font color="#26A269">|</font> <font color="#12488B"><b>head</b></font><font color="#A347BA"><b> -n</b></font> 1</pre></li>
+<li>Napisz skrypt, który wypisze adresy MAC wszystkich interfejsów
+sieciowych <pre>ifconfig <font color="#26A269">|</font> <font color="#12488B"><b>grep</b></font> -oE <font color="#A2734C"><b>'([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}'</b></font></pre></li>
+</ul>
+<ol start="5" type="1">
+<li><p>Suma kontrolna jest to liczba uzyskana według specjalnego
+algorytmu służąca do zapewnienia integralności danych.
+[https://pl.wikipedia.org/wiki/Suma_kontrolna]. Napisz skrypt, który
+stworzy plik raport.txt, zawierający w każdym wierszu nazwę pliku oraz
+jego sumę kontrolną obliczoną algorytmem md5, dla każdego pliku *.txt w
+aktualnym katalogu. nazwa pliku i suma kontrolna powinny być oddzielone
+spacją. Wykorzystaj program <code>md5sum</code>.</p><pre><font color="#2AA1B3">#!/bin/bash</font>
+
+<font color="#26A269">&gt;</font> raport.txt
+
+<font color="#26A269">for</font> plik <font color="#26A269">in</font> *.txt<font color="#26A269">;</font> <font color="#26A269">do</font>
+  <font color="#26A269">[</font><font color="#A347BA"><b> -e</b></font> <font color="#A2734C"><b>"$plik"</b></font> <font color="#26A269">]</font> <font color="#26A269">||</font> <font color="#26A269">continue</font>
+
+  hash<font color="#26A269">=$(</font>md5sum <font color="#A2734C"><b>"$plik"</b></font> <font color="#26A269">|</font> <font color="#12488B"><b>cut</b></font><font color="#A347BA"><b> -d</b></font><font color="#A2734C"><b>' '</b></font> -f1<font color="#26A269">)</font>
+
+  <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"$plik $hash"</b></font> <font color="#26A269">&gt;&gt;</font> raport.txt
+<font color="#26A269">done</font>
+</pre></li>
+<li><p>Napisz program weryfikujący integralność plików w katalogu. Dla
+każdego pliku *.txt w aktualnym katalogu, porównaj jego sumę kontrolną
+obliczoną za pomocą programu md5 z sumą kontrolną zapisaną w pliku
+raport.txt z zadania poprzedniego, oraz wyświetl ostrzegawczy komunikat
+w przypadku rozbieżności.</p><pre><font color="#2AA1B3">#!/bin/bash</font>
+
+<font color="#26A269">for</font> plik <font color="#26A269">in</font> *.txt<font color="#26A269">;</font> <font color="#26A269">do</font>
+  <font color="#26A269">[</font><font color="#A347BA"><b> -e</b></font> <font color="#A2734C"><b>"$plik"</b></font> <font color="#26A269">]</font> <font color="#26A269">||</font> <font color="#26A269">continue</font>
+
+  zapisany_hash<font color="#26A269">=$(</font><font color="#12488B"><b>grep</b></font> <font color="#A2734C"><b>"^$plik "</b></font> raport.txt <font color="#26A269">|</font> <font color="#12488B"><b>awk</b></font> <font color="#A2734C"><b>'{print $NF}'</b></font><font color="#26A269">)</font>
+
+  <font color="#26A269">if</font> <font color="#26A269">[</font><font color="#A347BA"><b> -n</b></font> <font color="#A2734C"><b>"$zapisany_hash"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+    aktualny_hash<font color="#26A269">=$(</font>md5sum <font color="#A2734C"><b>"$plik"</b></font> <font color="#26A269">|</font> <font color="#12488B"><b>cut</b></font><font color="#A347BA"><b> -d</b></font><font color="#A2734C"><b>' '</b></font> -f1<font color="#26A269">)</font>
+
+    <font color="#26A269">if</font> <font color="#26A269">[</font> <font color="#A2734C"><b>"$zapisany_hash"</b></font> <font color="#26A269">!=</font> <font color="#A2734C"><b>"$aktualny_hash"</b></font> <font color="#26A269">];</font> <font color="#26A269">then</font>
+      <font color="#12488B"><b>echo</b></font> <font color="#A2734C"><b>"OSTRZEŻENIE: Plik '$plik' został zmodyfikowany! (Niezgodność sumy MD5)"</b></font>
+    <font color="#26A269">fi</font>
+  <font color="#26A269">fi</font>
+<font color="#26A269">done</font>
+</pre></li>
+</ol>
+<ul>
+<li>Przetestuj skrypt zmieniając treść któregoś z plików.</li>
+<li>Zwróć uwagę, jak zmiana pojedynczego znaku wpływa na zmianę funkcji
+skrótu dla tego pliku.</li>
+<li>Czy program będzie działał, jeżeli któryś plik testowy będzie miał
+znak spacji w nazwie?</li>
+</ul>
+<ol start="7" type="1">
+<li><p>Napisz skrypt, który na podstawie pliku wejściowego wskazanego
+pierwszym argumentem wyświetli nazwy trzech planet o największej liczbie
+księżycy, w kolejności alfabetycznej. Przykładowy plik wejściowy: <a href="https://put-jug.github.io/lab-rtos/_resources/planets.txt">planets.txt</a>.</p><pre><font color="#2AA1B3">#!/bin/bash</font>
+
+PLIK<font color="#26A269">=</font><font color="#A2734C"><b>"$1"</b></font>
+
+<font color="#12488B"><b>grep</b></font><font color="#A347BA"><b> -v</b></font> <font color="#A2734C"><b>"^#"</b></font> <font color="#A2734C"><b>"$PLIK"</b></font> <font color="#26A269">|</font> <font color="#12488B"><b>sort</b></font> -k4 -nr <font color="#26A269">|</font> <font color="#12488B"><b>head</b></font><font color="#A347BA"><b> -n</b></font> 3 <font color="#26A269">|</font> <font color="#12488B"><b>awk</b></font> <font color="#A2734C"><b>'{print $1}'</b></font> <font color="#26A269">|</font> <font color="#12488B"><b>sort</b></font></pre></li>
+<li><p>W pliku <a href="https://put-jug.github.io/lab-rtos/_resources/trees.txt">trees.txt</a> zapisane są
+w formacie csv informacje o kilku drzewach rosnących w ogrodzie (wraz z
+nagłówkiem w pierwszej linii, informującym o zawartości kolumn pliku).
+Napisz skrypt, który zapisze do pliku output.txt 3 wysokości dwóch
+najwyższych brzóz o statusie “chronione”. Weryfikacja:<br>
+<code>./skrypt.sh</code><br>
+Oczekiwana zawartość pliku output.txt po uruchomieniu skryptu:<br>
+11.0<br>
+10.8</p></li>
+<li><p>Napisz skrypt, który sklei zawartość wszystkich plików
+przekazanych jako argumenty i wypisze w konsoli zgodnie z następującym
+przykładem:</p></li>
+</ol>
+<p><em>Zawartość plik1.txt</em>:</p>
+<pre><code>abc
+xyz</code></pre>
+<p><em>Zawartość inny_plik.txt</em>:</p>
+<pre><code>123
+456</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./task_3.sh</span> plik1.txt inny_plik.txt</span></code></pre></div>
+<p><em>Wyjście</em>:</p>
+<pre><code>plik1.txt: abc
+plik1.txt: xyz
+inny_plik.txt: 123
+inny_plik.txt: 456</code></pre><pre style="background-color: #1e1e1e; color: #d4d4d4; padding: 15px; font-family: 'Consolas', 'Courier New', monospace; line-height: 1.4; border-radius: 5px; overflow-x: auto;"><span style="color: #569cd6;">#!/bin/bash</span>
+for plik in "$@"; do
+if [ -f "$plik" ]; then
+awk -v prefix="$plik: " '{print prefix $0}' "$plik"
+fi
+done
+</pre>
+<ol start="10" type="1">
+<li><p>Napisz skrypt, który zliczy i wypisze sumę znaków we wszystkich
+plikach podanych jako argumenty wywołania.</p></li>
+<li><p>Napisz skrypt, który utworzy w katalogu domowym folder
+<em>pictures_backup</em> i skopiuje do niego wszystkie pliki z
+rozszerzeniem <em>jpg</em> znajdujące się w bieżącym katalogu, a
+następnie zmieni nowym plikom prawa dostępu na tylko do
+odczytu.</p></li>
+<li><p>Napisz skrypt, który przydzieli plikom odpowiednie prawa dostępu
+na podstawie par argumentów <em>plik</em> - <em>prawa dostępu w notacji
+numerycznej</em>. Przykładowo:</p></li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./task_6.sh</span> plik1.txt 467 plik2.txt 777 plik3.txt 577</span></code></pre></div>
+<ol start="13" type="1">
+<li><p>Napisz skrypt, który dopisze tekst określony jako pierwszy
+argument wywołania na końcu wszystkich plików z rozszerzeniem
+zdefiniowanym jako drugi argument i znajdujących się w bieżącym
+katalogu.</p></li>
+<li><p>Napisz skrypt, który zsumuje wielkości plików w bieżącym katalogu
+dla każdego rozszerzenia podanego jako argument. Przykładowo:</p></li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./task_8.sh</span> txt jpg rar</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">txt:</span> 173</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">jpg:</span> 3748909</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rar:</span> 0</span></code></pre></div>
+<ol start="15" type="1">
+<li><p>Napisz skrypt, który wyświetli pierwszą linię od końca z pliku
+podanego jako pierwszy argument, drugą linię od końca z pliku podanego
+jako drugi argument itd.</p>
+<p><em>Wersja rozszerzona:</em></p>
+<p>Jeżeli dany plik jest zbyt krótki, wyświetl stosowny
+komunikat.</p></li>
+<li><p>Napisz skrypt przyjmujący dwa argumenty - dwie nazwy plikow,
+który porówna zawartość tych dwóch plików tekstowych. Jeżeli zawartość
+obu plików jest jednakowa skrypt powinien wypisać wiadomość:
+<code>pliki jednakowe</code> Jeżeli pliki są różne, skrypt powinien
+wypisać który z nich ma więcej linii, np.:
+<code>plik1.txt ma więcej linii niż plik2.txt</code><br>
+Do porównania zawartości plików możesz wykorzystać komendę
+<code>diff plik1.txt plik2.txt</code></p></li>
+<li><p>Stwórz w pustym katalogu 3 pliki: plik1.txt, plik2.txt oraz
+plik3.txt. Umieść w każdym kilka słów. Napisz skrypt, który zamieni
+nazwy wszystkich plików w tym katalogu na liczbę znaków w danym
+pliku.</p></li>
+<li><p>Napisz skrypt, który w pętli wczytuje z klawiatury numer (PID)
+procesu, numer sygnału a następnie wysyła wskazany sygnał do określonego
+procesu. Wpisanie słowa <code>EXIT</code> kończy pracę skryptu.</p></li>
+<li><p>Stwórz kilka folderów i podfolderów, np.</p></li>
+</ol>
+<pre><code>mkdir -p studia/semestr6/scr/zadania &amp;&amp; mkdir -p studia/semestr6/scr/kolokwium &amp;&amp; mkdir -p studia/semestr6/abc &amp;&amp; mkdir -p studia/semestr5/xyz &amp;&amp; mkdir -p studia/semestr5/prs &amp;&amp; touch studia/semestr6/scr/ocena.txt</code></pre>
+<p>Napisz skrypt zmieniający rekursywnie nazwę każdego katalogu
+(pomijając pliki!) na wielkie litery.</p>
+<p>Wskazówki: - aby zmienić wielkość znaków w zmiennej możesz
+wykorzystać znacznik ^^ po nazwie zmiennej, jeżeli jest umieszczona w
+klamrach, np.:</p>
+<pre><code>ZMIENNA="hello"
+echo $ZMIENNA
+echo ${ZMIENNA^^}</code></pre>
+<ul>
+<li>skrypt może uruchamiać samego siebie rekursywnie</li>
+</ul>
+<ol start="20" type="1">
+<li>UUID (universally unique identifier) lub GUID jest to identyfikator
+globalnie unikatowy – identyfikator obiektów między innymi w systemie
+Windows lub wszędzie, gdzie potrzebny jest unikatowy identyfikator
+[https://pl.wikipedia.org/wiki/Globally_Unique_Identifier]</li>
+</ol>
+<p>Napisz skrypt który z pomocą polecenia uuid wygeneruje 10 unikalnych
+identyfikatorów, a następnie je posortuje i umieści w pliku id.txt,
+każdy identyfikator w osobnej linii.</p>
+<p>Czy potrzebne jest użycie komendy <code>uniq</code>, w celu
+wykluczenie powtórzeń?</p>
+<p>Jeżeli po wpisaniu komendy uuid w konsoli otrzymamy informację:
+<code>Command 'uuid' not found</code> należy program zainstalować.
+Instalacja odbywa się przez wywołanie komendy (komenda będzie wymagać
+hasła): <code>sudo apt install uuid</code></p>
+<ol start="21" type="1">
+<li>Napisz skrypt, który zapyta użytkownika o numer (indeks) wyrazu z
+ciągu Fibonacciego i zapisze tą wartość do zmiennej. W skrypcie dodaj
+funkcję, która korzystając z rekurencji obliczy podany wyraz ciągu.
+Wyświetl obliczoną wartość w terminalu.</li>
+</ol>
+</main>
+
+
+</body></html>
